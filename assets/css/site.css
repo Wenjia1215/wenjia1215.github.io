@@ -23,3 +23,56 @@
 .skip-link:focus {
   clip-path: none;
 }
+
+.service-section {
+  background: #f8fbfd;
+}
+
+.service-section h2 {
+  max-width: 900px;
+}
+
+.publications-hero {
+  padding-bottom: 56px;
+}
+
+.publications-hero h1 {
+  font-size: clamp(3.2rem, 7vw, 6.25rem);
+}
+
+.publications-section {
+  padding-top: 72px;
+}
+
+.publication-item {
+  align-items: start;
+  padding: 28px;
+}
+
+.publication-item h2 {
+  margin: 0 0 12px;
+  max-width: 900px;
+  font-size: clamp(1.35rem, 2.25vw, 2.25rem);
+  line-height: 1.08;
+  letter-spacing: -0.045em;
+}
+
+.publication-item p {
+  margin: 0;
+  color: var(--ink);
+  font-size: 1rem;
+}
+
+@media (max-width: 720px) {
+  .publications-hero {
+    padding-bottom: 42px;
+  }
+
+  .publications-section {
+    padding-top: 48px;
+  }
+
+  .publication-item {
+    padding: 22px;
+  }
+}
