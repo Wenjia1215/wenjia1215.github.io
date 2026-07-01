@@ -24,6 +24,39 @@
   clip-path: none;
 }
 
+.brand-with-icon {
+  flex-direction: row;
+  align-items: center;
+  gap: 12px;
+}
+
+.brand-icon {
+  width: 46px;
+  height: 46px;
+  display: block;
+  flex: 0 0 auto;
+}
+
+.brand-text {
+  display: inline-flex;
+  flex-direction: column;
+  line-height: 1;
+}
+
+.brand-name {
+  font-size: 1.05rem;
+  font-weight: 950;
+  letter-spacing: -0.035em;
+}
+
+.brand .brand-tagline {
+  margin-top: 6px;
+  font-size: 0.68rem;
+  font-weight: 850;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+
 .service-section {
   background: #f8fbfd;
 }
@@ -64,6 +97,15 @@
 }
 
 @media (max-width: 720px) {
+  .brand-with-icon {
+    gap: 10px;
+  }
+
+  .brand-icon {
+    width: 38px;
+    height: 38px;
+  }
+
   .publications-hero {
     padding-bottom: 42px;
   }
