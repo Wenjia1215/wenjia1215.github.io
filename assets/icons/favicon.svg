@@ -1,22 +1,18 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" aria-label="Wenjia Wang website icon">
   <defs>
-    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
-      <stop offset="0%" stop-color="#07101f"/>
-      <stop offset="100%" stop-color="#0d2236"/>
-    </linearGradient>
-    <linearGradient id="light" x1="0" y1="0" x2="1" y2="1">
-      <stop offset="0%" stop-color="#ffffff"/>
-      <stop offset="100%" stop-color="#edf2f7"/>
-    </linearGradient>
-    <filter id="shadow" x="-20%" y="-20%" width="140%" height="140%">
-      <feDropShadow dx="0" dy="8" stdDeviation="10" flood-color="#07101f" flood-opacity="0.18"/>
-    </filter>
+    <style>
+      .navy { fill: #041734; }
+      .cream { fill: #f7f3ea; }
+      .ring { fill: none; stroke: #f7f3ea; stroke-width: 12; stroke-linecap: round; }
+      .page { fill: none; stroke: #f7f3ea; stroke-width: 10; stroke-linecap: round; stroke-linejoin: round; }
+    </style>
   </defs>
-  <g filter="url(#shadow)">
-    <circle cx="256" cy="256" r="210" fill="url(#bg)"/>
-    <circle cx="256" cy="256" r="210" fill="none" stroke="#dce6ef" stroke-opacity="0.18" stroke-width="6"/>
-    <path d="M392 124c-54 12-99 50-121 103-28 67-90 100-153 88 13 33 34 62 61 84 51 42 121 57 184 38 47-14 88-44 115-84-10 50-38 97-79 130-91 74-223 62-300-27-24-28-40-60-47-94 7 96 87 171 185 171 115 0 208-93 208-208 0-83-48-155-118-191z" fill="url(#light)" opacity="0.96"/>
-    <text x="256" y="322" text-anchor="middle" font-size="228" font-weight="700" font-family="Songti SC, STSong, Noto Serif CJK SC, serif" fill="#faf7f0">文</text>
-    <text x="370" y="130" font-size="58" font-weight="600" font-family="Georgia, Times New Roman, serif" fill="#faf7f0">WJ</text>
-  </g>
+  <circle class="navy" cx="256" cy="256" r="220"/>
+  <path class="ring" d="M103 382 C68 327, 52 272, 60 209 C73 106, 156 57, 256 57 C356 57, 439 106, 452 209 C460 272, 444 327, 409 382"/>
+  <text x="256" y="310" text-anchor="middle" font-size="210" font-weight="700" font-family="Songti SC, STSong, Noto Serif CJK SC, serif" class="cream">文</text>
+  <path class="page" d="M102 392 C160 369, 219 372, 256 425"/>
+  <path class="page" d="M410 392 C352 369, 293 372, 256 425"/>
+  <path class="page" d="M116 405 C172 386, 223 390, 256 438"/>
+  <path class="page" d="M396 405 C340 386, 289 390, 256 438"/>
+  <path class="page" d="M256 425 L256 451"/>
 </svg>
