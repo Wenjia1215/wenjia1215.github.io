@@ -67,11 +67,27 @@
     }, [badge, label]);
   }
 
+  function makeBrand() {
+    const icon = el('img', {
+      className: 'brand-icon',
+      src: 'assets/icons/favicon.svg',
+      alt: '',
+      'aria-hidden': 'true',
+    });
+    const name = el('span', { className: 'brand-name', text: SITE.name });
+    const tagline = el('span', { className: 'brand-tagline', text: SITE.tagline });
+    const text = el('span', { className: 'brand-text' }, [name, tagline]);
+
+    return el('a', {
+      className: 'brand brand-with-icon',
+      href: 'index.html',
+      'aria-label': `${SITE.name} home`,
+    }, [icon, text]);
+  }
+
   function makeHeader(page) {
     const skipLink = el('a', { className: 'skip-link', href: '#main-content', text: 'Skip to content' });
-
-    const tagline = el('span', { text: SITE.tagline });
-    const brand = el('a', { className: 'brand', href: 'index.html' }, [SITE.name, tagline]);
+    const brand = makeBrand();
 
     const modeNav = el('nav', { className: 'mode-pills', 'aria-label': 'Primary pages' },
       SITE.modes.map((item) => makeModeLink(item, page)));
