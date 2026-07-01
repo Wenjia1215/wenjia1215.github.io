@@ -1,0 +1,22 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" aria-label="Wenjia Wang website icon">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#07101f"/>
+      <stop offset="100%" stop-color="#0d2236"/>
+    </linearGradient>
+    <linearGradient id="light" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#ffffff"/>
+      <stop offset="100%" stop-color="#edf2f7"/>
+    </linearGradient>
+    <filter id="shadow" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="0" dy="8" stdDeviation="10" flood-color="#07101f" flood-opacity="0.18"/>
+    </filter>
+  </defs>
+  <g filter="url(#shadow)">
+    <circle cx="256" cy="256" r="210" fill="url(#bg)"/>
+    <circle cx="256" cy="256" r="210" fill="none" stroke="#dce6ef" stroke-opacity="0.18" stroke-width="6"/>
+    <path d="M392 124c-54 12-99 50-121 103-28 67-90 100-153 88 13 33 34 62 61 84 51 42 121 57 184 38 47-14 88-44 115-84-10 50-38 97-79 130-91 74-223 62-300-27-24-28-40-60-47-94 7 96 87 171 185 171 115 0 208-93 208-208 0-83-48-155-118-191z" fill="url(#light)" opacity="0.96"/>
+    <text x="256" y="322" text-anchor="middle" font-size="228" font-weight="700" font-family="Songti SC, STSong, Noto Serif CJK SC, serif" fill="#faf7f0">文</text>
+    <text x="370" y="130" font-size="58" font-weight="600" font-family="Georgia, Times New Roman, serif" fill="#faf7f0">WJ</text>
+  </g>
+</svg>
