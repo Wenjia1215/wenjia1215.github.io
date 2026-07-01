@@ -2,3 +2,24 @@
 @import url("icons.css");
 @import url("interaction.css");
 @import url("teaching-bg.css");
+
+:focus-visible {
+  outline: 3px solid var(--cyan);
+  outline-offset: 4px;
+}
+
+.skip-link {
+  position: absolute;
+  left: 1rem;
+  top: 1rem;
+  z-index: 100;
+  padding: 0.65rem 0.9rem;
+  border-radius: 999px;
+  color: #fff;
+  background: var(--teal);
+  clip-path: inset(50%);
+}
+
+.skip-link:focus {
+  clip-path: none;
+}
