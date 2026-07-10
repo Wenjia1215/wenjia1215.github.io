@@ -3,16 +3,15 @@
 
   const SITE = {
     name: 'Wenjia Wang',
-    tagline: 'Research & Teaching',
+    tagline: 'Trustworthy AI + CS Education',
     email: 'wenjiabusiness@gmail.com',
     location: 'Miami, FL',
-    modes: [
-      { page: 'teaching', label: 'Teaching', href: 'index.html', activeClass: 'teaching' },
-      { page: 'research', label: 'Research', href: 'research.html', activeClass: 'research' },
-    ],
     nav: [
+      { page: 'home', label: 'Home', href: 'index.html' },
+      { page: 'research', label: 'Research', href: 'research.html' },
+      { page: 'teaching', label: 'Teaching', href: 'teaching.html' },
       { page: 'publications', label: 'Publications', href: 'publications.html' },
-      { label: 'CV', href: 'assets/files/wenjia-wang-cv.pdf' },
+      { page: 'cv', label: 'CV', href: 'cv.html' },
     ],
     socials: [
       { label: 'GitHub', badge: 'GH', href: 'https://github.com/Wenjia1215' },
@@ -34,19 +33,13 @@
   }
 
   function currentPage() {
-    return document.body.dataset.page || 'teaching';
+    return document.body.dataset.page || 'home';
   }
 
-  function markActive(link, isActive, extraClass = '') {
+  function markActive(link, isActive) {
     if (!isActive) return;
-    link.className = ['active', extraClass].filter(Boolean).join(' ');
+    link.className = 'active';
     link.setAttribute('aria-current', 'page');
-  }
-
-  function makeModeLink(item, page) {
-    const link = el('a', { href: item.href, text: item.label });
-    markActive(link, item.page === page, item.activeClass);
-    return link;
   }
 
   function makeNavLink(item, page) {
@@ -89,16 +82,13 @@
     const skipLink = el('a', { className: 'skip-link', href: '#main-content', text: 'Skip to content' });
     const brand = makeBrand();
 
-    const modeNav = el('nav', { className: 'mode-pills', 'aria-label': 'Primary pages' },
-      SITE.modes.map((item) => makeModeLink(item, page)));
-
-    const pageNav = el('nav', { className: 'nav-links', 'aria-label': 'Secondary pages' },
+    const pageNav = el('nav', { className: 'nav-links', 'aria-label': 'Primary pages' },
       SITE.nav.map((item) => makeNavLink(item, page)));
 
     const socialNav = el('nav', { className: 'header-socials', 'aria-label': 'Profile links' },
       SITE.socials.map(makeSocialLink));
 
-    const header = el('header', { className: 'site-header mode-header' }, [brand, modeNav, pageNav, socialNav]);
+    const header = el('header', { className: 'site-header' }, [brand, pageNav, socialNav]);
     return [skipLink, header];
   }
 
