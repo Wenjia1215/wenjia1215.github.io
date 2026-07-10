@@ -3,49 +3,892 @@
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="description" content="Terminal-style personal website for Wenjia Wang, a Computer Science Ph.D. candidate working across trustworthy AI, cybersecurity, compliance, and CS education.">
+    <meta
+      name="description"
+      content="Wenjia Wang's terminal-style portfolio for trustworthy AI, cybersecurity, and computer science education."
+    >
+    <meta name="theme-color" content="#0a0a0a">
     <link rel="icon" type="image/svg+xml" href="assets/icons/favicon.svg">
     <link rel="shortcut icon" href="assets/icons/favicon.svg">
-    <meta name="theme-color" content="#050505">
-    <link rel="stylesheet" href="assets/css/site.css">
-    <script defer src="assets/js/site.js"></script>
     <title>Wenjia Wang | Terminal Portfolio</title>
+    <style>
+      @import url("https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&display=swap");
+
+      :root {
+        color-scheme: dark;
+        --bg: #0a0a0a;
+        --panel: #101010;
+        --text: #cfcfcf;
+        --muted: #626262;
+        --soft: #8f8f8f;
+        --bright: #ededed;
+        --link: #b8b8b8;
+        --live: #e05b22;
+        --accent: #a87592;
+        --divider: rgba(255, 255, 255, 0.11);
+        --selection: rgba(255, 255, 255, 0.14);
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      html {
+        min-height: 100%;
+        background: var(--bg);
+      }
+
+      body {
+        min-height: 100%;
+        margin: 0;
+        overflow-x: hidden;
+        background:
+          radial-gradient(circle at 76% 78%, rgba(255, 255, 255, 0.035), transparent 26rem),
+          var(--bg);
+        color: var(--text);
+        font-family: "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+        font-size: 16px;
+        letter-spacing: 0;
+      }
+
+      ::selection {
+        background: var(--selection);
+      }
+
+      a {
+        color: var(--link);
+        text-decoration-color: rgba(255, 255, 255, 0.34);
+        text-underline-offset: 0.2em;
+        transition: color 160ms ease, text-decoration-color 160ms ease;
+      }
+
+      a:hover {
+        color: var(--bright);
+        text-decoration-color: rgba(255, 255, 255, 0.82);
+      }
+
+      .layout {
+        display: grid;
+        grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+        min-height: 100vh;
+        isolation: isolate;
+      }
+
+      .terminal {
+        width: min(100%, 720px);
+        min-height: 100vh;
+        justify-self: end;
+        padding: 66px 54px 44px;
+        border-right: 1px solid var(--divider);
+        display: flex;
+        flex-direction: column;
+      }
+
+      .terminal-header {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        min-height: 22px;
+        margin-bottom: 42px;
+        color: #404040;
+        font-size: 14px;
+        font-weight: 600;
+      }
+
+      .dot {
+        width: 13px;
+        height: 13px;
+        border: 2px solid #555;
+        display: inline-block;
+      }
+
+      .dot + .dot {
+        margin-left: -4px;
+      }
+
+      .session-label {
+        margin-left: 12px;
+      }
+
+      .terminal-scroll {
+        flex: 1;
+        overflow-y: auto;
+        padding-right: 10px;
+        scrollbar-width: thin;
+        scrollbar-color: #2d2d2d transparent;
+      }
+
+      .terminal-scroll::-webkit-scrollbar {
+        width: 8px;
+      }
+
+      .terminal-scroll::-webkit-scrollbar-thumb {
+        background: #2d2d2d;
+      }
+
+      .block {
+        margin: 0 0 24px;
+      }
+
+      .command-line,
+      .output-line,
+      .note-line {
+        min-height: 1.55em;
+        line-height: 1.55;
+        white-space: pre-wrap;
+        word-break: break-word;
+      }
+
+      .command-line {
+        color: var(--bright);
+        font-weight: 700;
+      }
+
+      .prompt {
+        color: var(--soft);
+        margin-right: 8px;
+        font-weight: 500;
+      }
+
+      .prefix {
+        color: var(--soft);
+        margin-right: 8px;
+      }
+
+      .output-line {
+        color: var(--soft);
+        font-weight: 600;
+      }
+
+      .output-line strong {
+        color: var(--text);
+        font-weight: 700;
+      }
+
+      .output-line .live {
+        color: var(--live);
+        font-weight: 700;
+      }
+
+      .output-line .soon,
+      .output-line .tag {
+        color: var(--accent);
+        font-weight: 700;
+      }
+
+      .note-line {
+        color: #565656;
+        font-style: italic;
+        font-weight: 600;
+      }
+
+      .typing-cursor::after,
+      .input-shell::after {
+        content: "";
+        display: inline-block;
+        width: 0.62em;
+        height: 1.05em;
+        margin-left: 4px;
+        transform: translateY(0.18em);
+        background: rgba(255, 255, 255, 0.72);
+        animation: blink 0.9s steps(2, start) infinite;
+      }
+
+      .input-shell {
+        display: flex;
+        align-items: center;
+        min-height: 34px;
+        margin-top: 16px;
+        color: var(--bright);
+        font-weight: 700;
+      }
+
+      .input-shell:focus-within::after {
+        display: none;
+      }
+
+      .input-shell input {
+        width: 100%;
+        min-width: 0;
+        border: 0;
+        outline: 0;
+        padding: 0;
+        background: transparent;
+        color: var(--bright);
+        caret-color: var(--bright);
+        font: inherit;
+        font-weight: 700;
+      }
+
+      .input-shell input::placeholder {
+        color: #4c4c4c;
+      }
+
+      .portrait {
+        position: relative;
+        min-height: 100vh;
+        overflow: hidden;
+        cursor: crosshair;
+        background:
+          linear-gradient(90deg, rgba(255, 255, 255, 0.012), transparent 16%),
+          var(--bg);
+      }
+
+      .portrait-grid {
+        position: absolute;
+        inset: 0;
+        opacity: 0;
+        background-image:
+          linear-gradient(rgba(255, 255, 255, 0.08) 1px, transparent 1px),
+          linear-gradient(90deg, rgba(255, 255, 255, 0.08) 1px, transparent 1px);
+        background-size: 24px 24px;
+        mask-image: radial-gradient(circle at 52% 70%, black, transparent 57%);
+        pointer-events: none;
+      }
+
+      .portrait-hint {
+        position: absolute;
+        left: 50%;
+        bottom: 34px;
+        transform: translateX(-50%);
+        color: #343434;
+        font-size: 13px;
+        font-style: italic;
+        font-weight: 700;
+        white-space: nowrap;
+        pointer-events: none;
+      }
+
+      .portrait-output {
+        position: absolute;
+        left: 50%;
+        bottom: clamp(88px, 8vh, 126px);
+        transform: translateX(-50%);
+        margin: 0;
+        color: #737373;
+        font-family: "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+        font-size: clamp(5.4px, 0.43vw, 7.3px);
+        line-height: 0.92;
+        letter-spacing: 0;
+        text-align: left;
+        white-space: pre;
+        user-select: none;
+        opacity: 0.78;
+        text-shadow: 0 0 12px rgba(255, 255, 255, 0.08);
+        transition: color 180ms ease, opacity 180ms ease, filter 180ms ease;
+      }
+
+      .portrait:hover .portrait-output {
+        color: #909090;
+        opacity: 0.92;
+        filter: contrast(1.12);
+      }
+
+      .scanline {
+        position: absolute;
+        inset: 0;
+        background: linear-gradient(
+          to bottom,
+          transparent,
+          transparent 49%,
+          rgba(255, 255, 255, 0.018) 50%,
+          transparent 51%,
+          transparent
+        );
+        background-size: 100% 7px;
+        mix-blend-mode: screen;
+        opacity: 0.65;
+        pointer-events: none;
+      }
+
+      .noise {
+        position: absolute;
+        inset: -80px;
+        opacity: 0.01;
+        background-image:
+          repeating-radial-gradient(circle at 10% 20%, #fff 0 1px, transparent 1px 4px),
+          repeating-radial-gradient(circle at 80% 70%, #fff 0 1px, transparent 1px 5px);
+        animation: drift 18s linear infinite;
+        pointer-events: none;
+      }
+
+      .sr-only {
+        position: absolute;
+        width: 1px;
+        height: 1px;
+        padding: 0;
+        overflow: hidden;
+        clip: rect(0, 0, 0, 0);
+        white-space: nowrap;
+        border: 0;
+      }
+
+      @keyframes blink {
+        0%,
+        45% {
+          opacity: 1;
+        }
+        46%,
+        100% {
+          opacity: 0;
+        }
+      }
+
+      @keyframes drift {
+        from {
+          transform: translate3d(0, 0, 0);
+        }
+        to {
+          transform: translate3d(-48px, 32px, 0);
+        }
+      }
+
+      @media (max-width: 980px) {
+        body {
+          overflow-y: auto;
+        }
+
+        .layout {
+          display: flex;
+          min-height: 100vh;
+          flex-direction: column;
+        }
+
+        .terminal {
+          width: 100%;
+          min-height: auto;
+          border-right: 0;
+          border-bottom: 1px solid var(--divider);
+          padding: 40px 26px 30px;
+        }
+
+        .portrait {
+          min-height: 58vh;
+        }
+
+        .portrait-output {
+          bottom: 72px;
+          font-size: clamp(5.6px, 1.05vw, 8px);
+        }
+      }
+
+      @media (max-width: 560px) {
+        body {
+          font-size: 14px;
+        }
+
+        .terminal {
+          padding: 28px 18px 24px;
+        }
+
+        .terminal-header {
+          margin-bottom: 30px;
+          font-size: 12px;
+        }
+
+        .dot {
+          width: 11px;
+          height: 11px;
+        }
+
+        .block {
+          margin-bottom: 20px;
+        }
+
+        .portrait {
+          min-height: 50vh;
+        }
+      }
+    </style>
   </head>
   <body>
-    <main class="terminal-shell" id="main-content">
-      <section class="terminal-pane" aria-label="Interactive profile terminal">
-        <div class="session-bar" aria-hidden="true">
-          <span class="window-dot"></span>
-          <span class="window-dot"></span>
-          <span class="window-dot"></span>
-          <span class="session-version">session v3.0 · wenjia@portfolio</span>
+    <main class="layout" aria-label="Wenjia Wang terminal portfolio">
+      <section class="terminal" aria-label="Interactive terminal biography">
+        <div class="terminal-header" aria-hidden="true">
+          <span class="dot"></span>
+          <span class="dot"></span>
+          <span class="dot"></span>
+          <span class="session-label">session v3.2</span>
         </div>
 
-        <div class="terminal-log" id="terminalLog" aria-live="polite"></div>
+        <div class="terminal-scroll" id="terminalScroll">
+          <div id="terminalLog" aria-live="polite"></div>
 
-        <form class="terminal-form" id="terminalForm" autocomplete="off">
-          <label class="sr-only" for="terminalInput">Type a command</label>
-          <span class="terminal-prompt">~$</span>
-          <input id="terminalInput" name="command" type="text" spellcheck="false" placeholder="try: help, about, work, links, contact">
-        </form>
+          <form class="input-shell" id="commandForm" autocomplete="off">
+            <label class="sr-only" for="commandInput">Type a command</label>
+            <span class="prompt" aria-hidden="true">~$</span>
+            <input
+              id="commandInput"
+              name="command"
+              type="text"
+              inputmode="text"
+              spellcheck="false"
+              autocomplete="off"
+              disabled
+            >
+          </form>
+        </div>
       </section>
 
-      <aside class="portrait-pane" aria-label="Digital portrait">
-        <div class="portrait-meta">
-          <span>ascii face render</span>
-          <span>source: teaching-bg.png</span>
-        </div>
-        <div class="portrait-stage">
-          <div class="number-rain" id="numberRain" aria-hidden="true"></div>
-          <pre class="ascii-face" id="asciiFace" aria-label="ASCII portrait of Wenjia Wang">loading portrait...</pre>
-        </div>
-        <canvas id="portraitCanvas" hidden></canvas>
-        <div class="portrait-footer" aria-hidden="true">
-          <span>trustworthy-ai</span>
-          <span>cybersecurity</span>
-          <span>cs-education</span>
-        </div>
+      <aside class="portrait" id="portraitStage" aria-label="ASCII portrait of Wenjia Wang">
+        <div class="portrait-grid" aria-hidden="true"></div>
+        <div class="noise" aria-hidden="true"></div>
+        <pre class="portrait-output" id="portraitOutput" aria-hidden="true">loading portrait...</pre>
+        <div class="scanline" aria-hidden="true"></div>
+        <p class="portrait-hint" aria-hidden="true">~ hover to interact ~</p>
       </aside>
     </main>
+
+    <script>
+      (() => {
+        "use strict";
+
+        const links = {
+          github: "https://github.com/Wenjia1215",
+          linkedin: "https://www.linkedin.com/in/wenjiawang-page/",
+          scholar: "https://scholar.google.com/citations?user=Zl-yM-kAAAAJ&hl=en&oi=ao",
+          youtube: "https://www.youtube.com/@WenjiaCybersecurity",
+          cv: "assets/files/wenjia-wang-cv.pdf",
+          email: "mailto:wenjiabusiness@gmail.com"
+        };
+
+        const terminalLog = document.querySelector("#terminalLog");
+        const terminalScroll = document.querySelector("#terminalScroll");
+        const commandForm = document.querySelector("#commandForm");
+        const commandInput = document.querySelector("#commandInput");
+        const portraitStage = document.querySelector("#portraitStage");
+        const portraitOutput = document.querySelector("#portraitOutput");
+
+        const portraitBase = [
+          "",
+          "",
+          "",
+          "",
+          "                                 ifffti",
+          "                             iLCC08800Ct1iiLt;",
+          "                          ifLG800000000000000GLti",
+          "                         1LG0G0000000880000088800f",
+          "                       ;LCG0000088000888880G000000Gffi",
+          "                      1CG0088888880008888880G00088888C",
+          "                     iCG088888880000000008000008888888f",
+          "                     f008888888888008888888000888888880t",
+          "                    iG8888888888000008888888808888888088L",
+          "                    f088888888800088880088880880008888088L",
+          "                   ;G8888888888800000GGGGG0008880800088888L",
+          "                   108888888880GCCCLfttttffLCGGG0000088888C",
+          "                   L888888880Cft1111111111ttttffLCG00888880t",
+          "                  iG088880GCft1111iiiiiiiiiii1tttfLC0888888C",
+          "                  tG08880Lfft111ii;;;;;;;;;;;i11tttLC0888880t",
+          "                  L0888GCttt11iii;;;;:::;;;;;;ii11ttLC080888f",
+          "                  L0880Lftt11ii;;;;::,,:::;;;;iii11ttfC08888L",
+          "                 ;C080Cftt111ii;;;:,,,  :::;;;;iii11ttfC0880L;",
+          "                 1000GLftt11iii;;;::,,  :::;;;;iiii11tfLG880t",
+          "                 1000GLtt11iiii;;;;::, ,:::::;;iiii11ttfC080t",
+          "                 iG0GCftt1iiii;;;;:,,   ::::;i1ttt111ttfL08G1",
+          "                  C00Cftt111111i;:,,,   ,:;itttt11ttttttfG8Ci",
+          "                  L00Cfttttttfft11;::  ,::;i;;;;;i1tttttfC0f",
+          "                  t00Ctttft1ii;;i;;;;;::;ii;::;:;;iitttttC0t",
+          "                  iG0Ltttt1ii;;:::;1i:::;ii:;itft1111tCLLCCi",
+          "                   f0Lttt11i1iff1;;;ii;:ii;;i1LCt1tt11fffLt1:",
+          "                   tLLLGti1tt1CL1i;;11;:i1i:;i;;;;iiiiiitfti:",
+          "                  :ttLft1i11i;;;;;;;1t;:1ti;:;:;;;;;i1ii1t1;",
+          "                   itf1iiiii;;;;:::;11;:;i1;::::::::ii;i1tii",
+          "                   ;it1ii1i;:::::::i1i;:;;ii;:::,,:;i;;i1tii",
+          "                   ii11i;ii;:,::::i1ii;:;iiii;;;;;;;:;;i1t1;",
+          "                    i1ti;;;;;;;;:;;i11;:;i1i;:,,,,,::;;i1t1i",
+          "                    i1t1i;;::,,,,,;11i;:;i11i;:::::::;ii1ti;",
+          "                    ;1t1i;;:::,:::;1ii:,:;ii1;;;:::;;iii1ti;",
+          "                     1t1ii;::::::;;111;::it1i;;;;;;;;iii1t1;",
+          "                     1ttiii;;:::::;i11t1111i;;;;;;;;;;ii1t1",
+          "                     itt1iii;;;;:;;;iiiii;;;;ii;;;;;;;iitti",
+          "                      tt1ii;;;;;;;;i;;;;;iiiiii;;;;;;;iit1",
+          "                      it1ii;;;;;;;ii11iiiiii1tti;;;;;ii1ti",
+          "                       1t1iiii;;;;tfti;:::;it1i;;;;;ii1tt;",
+          "                       ittiiiii;;;i1t11iii111i;;;;iiii1tt",
+          "                        1t11i1ii;;;iiiiii1iii;;;;iii11tf1",
+          "                        ittt111i;;;;i;;;i;;;;;;iii11tffti",
+          "                         tfft111iii;;;;;;;;;;;iiii1tLLf1",
+          "                         itfLLt1iiii;;;::::;;;iii1fLf1ti",
+          "                          1ffLCLt1iii;;;::::;;i1tLL111t1:",
+          "                           1fttLCf1iiii;;;;;;itLCtiii1tttiitCL",
+          "                            1t1itLLf1iiiii11tLCL1iiiii1tt11fC0Ci",
+          "                         tf1tt1iiifCCLLLLLLCLf11iiiiii111iii10000GL1",
+          "                        fGftf1iiiii1tfftt11iiiiii;iiiii1ii;;L00088880Li",
+          "                     ifG0t11t1iiiiii11iiiiiiiiiii;;;;iiii;:1000088888880Li",
+          "                  iLG8800fi1t1iii;;ii1iiiii;;;ii;;;;;;ii;:iG88008888888888C1",
+          "                1C8888000Gii11ii;;;;iii;;;;;;;i;;;;;;;;;;iG88000088888888888G1",
+          "               L8888880008Cii1i;;;;;;iii;;;;ii;;;;;;;;;;1G88008808888888888888Ct",
+          "            iL0888888880008Gti;;;;;;;;iiiiiii;;;;;;:::if080008808888888888888888C1",
+          "          ;L08888888888800080C1:::;;;;;;iii;;;;;;;:,;tG880008888888888888888888880f",
+          "        ;f088888888888888800880C1;:;;;;;;;;;;;::::;tG880000088888000800088888888888G1",
+          "       t08888888888888888880800880Lt1;::::::,:;itC08800000008088000000000088888888888t",
+          "     ;C888888888888888888888800008880GCLfttfLCG088800000000000880000000000888888888888",
+          "    t088888888888888888888880000000008888888888000000000000000000000000000800088088888",
+        ];
+
+        const bootLines = [
+          { kind: "command", text: "whoami" },
+          {
+            kind: "output",
+            lines: [
+              "wenjia wang . cs phd candidate . trustworthy ai . educator"
+            ]
+          },
+          { kind: "spacer" },
+          { kind: "command", text: "cat about.txt" },
+          {
+            kind: "output",
+            lines: [
+              "building verifiable ai for compliance qa and security.",
+              "teaching cs with systems students build and explain.",
+              "",
+              "i like retrieval, runtime checks, usable tools, and practical software."
+            ]
+          },
+          { kind: "spacer" },
+          { kind: "command", text: "ls research/" },
+          {
+            kind: "output",
+            lines: [
+              "<a href=\"publications.html\">ComplianceGPT</a>   . citation-grounded compliance qa <span class=\"live\">[live]</span>",
+              "<a href=\"publications.html\">Zero Trust migration</a> . overlays for legacy infrastructure <span class=\"tag\">[paper]</span>",
+              "<a href=\"publications.html\">Compliance frameworks</a> . cybersecurity governance <span class=\"tag\">[paper]</span>"
+            ],
+            html: true
+          },
+          { kind: "spacer" },
+          { kind: "command", text: "ls teaching/" },
+          {
+            kind: "output",
+            lines: [
+              "programming . data structures . software engineering",
+              "ai applications . cybersecurity . capstone mentoring",
+              "fiu capstone showcase . judge since fall 2021 <span class=\"live\">[service]</span>"
+            ],
+            html: true
+          },
+          { kind: "spacer" },
+          { kind: "command", text: "echo $LINKS" },
+          {
+            kind: "output",
+            lines: [
+              `github    <a href="${links.github}">@Wenjia1215</a>`,
+              `linkedin  <a href="${links.linkedin}">wenjia wang</a>`,
+              `scholar   <a href="${links.scholar}">google scholar</a>`,
+              `youtube   <a href="${links.youtube}">WenjiaCybersecurity</a>`,
+              `cv        <a href="${links.cv}">download pdf</a>`,
+              `email     <a href="${links.email}">wenjiabusiness@gmail.com</a>`
+            ],
+            html: true
+          },
+          { kind: "spacer" },
+          {
+            kind: "note",
+            lines: [
+              "// llm chat mode coming later. local replies are active now.",
+              "// try typing something"
+            ]
+          }
+        ];
+
+        const replies = {
+          help: [
+            "commands: about . research . teaching . experience . skills . links . contact . cv . face . clear",
+            "shortcuts: whoami, cat about.txt, ls research/, ls teaching/, echo $LINKS"
+          ],
+          about: [
+            "wenjia wang is a cs ph.d. candidate focused on trustworthy ai, cybersecurity, and cs education.",
+            "i care about systems that can be verified, explained, taught, and actually used."
+          ],
+          research: [
+            "focus: verifiable ai for compliance question answering.",
+            "methods: retrieval evidence, citation grounding, answer contracts, runtime verification.",
+            `<a href="publications.html">open publications</a>`
+          ],
+          teaching: [
+            "areas: programming, data structures, software engineering, ai applications, cybersecurity.",
+            "academic service: fiu senior capstone mentor and capstone showcase judge from fall 2021 to present."
+          ],
+          experience: [
+            "cv additions to highlight: capstone mentor by semester, and fiu capstone showcase judge every spring, summer, and fall since fall 2021.",
+            "positioning: trustworthy ai researcher + practical cs educator + security/compliance builder."
+          ],
+          skills: [
+            "ai: rag, evidence selection, llm evaluation, grounded qa, ai application design.",
+            "security: compliance frameworks, zero trust, cloud security, policy-aware systems.",
+            "teaching: project-based cs, debugging, system explanation, mentoring."
+          ],
+          links: [
+            `github    <a href="${links.github}">@Wenjia1215</a>`,
+            `linkedin  <a href="${links.linkedin}">wenjia wang</a>`,
+            `scholar   <a href="${links.scholar}">google scholar</a>`,
+            `youtube   <a href="${links.youtube}">WenjiaCybersecurity</a>`
+          ],
+          contact: [
+            `email     <a href="${links.email}">wenjiabusiness@gmail.com</a>`,
+            "location  miami, fl"
+          ],
+          cv: [
+            `<a href="${links.cv}">download cv pdf</a>`,
+            "next pass: add academic service entries for capstone mentoring and showcase judging."
+          ],
+          face: [
+            "portrait renderer: your attached headshot was converted into embedded ascii texture.",
+            "move your pointer over the right panel to perturb the render."
+          ],
+          chat: [
+            "llm mode is planned, but not wired yet.",
+            "for now this terminal uses fast local replies so the site stays static and free to host."
+          ],
+          hello: [
+            "hi. i am the small local terminal version of wenjia's site.",
+            "try `research`, `teaching`, `links`, or `cv`."
+          ],
+          hi: [
+            "hi. i am the small local terminal version of wenjia's site.",
+            "try `research`, `teaching`, `links`, or `cv`."
+          ]
+        };
+
+        const aliases = {
+          "?": "help",
+          "cat about.txt": "about",
+          "cat research.txt": "research",
+          "cat teaching.txt": "teaching",
+          "ls": "help",
+          "ls research": "research",
+          "ls research/": "research",
+          "ls teaching": "teaching",
+          "ls teaching/": "teaching",
+          "ls skills": "skills",
+          "ls skills/": "skills",
+          "echo $links": "links",
+          "echo $LINKS": "links",
+          "whoami": "about",
+          "email": "contact",
+          "resume": "cv",
+          "publications": "research",
+          "linkedin": "links",
+          "github": "links",
+          "scholar": "links",
+          "youtube": "links",
+          "llm": "chat"
+        };
+
+        let portraitFrame = 0;
+        let pointer = { active: false, x: 0.5, y: 0.5 };
+
+        function delay(ms) {
+          return new Promise((resolve) => window.setTimeout(resolve, ms));
+        }
+
+        function escapeHtml(value) {
+          return value
+            .replaceAll("&", "&amp;")
+            .replaceAll("<", "&lt;")
+            .replaceAll(">", "&gt;")
+            .replaceAll("\"", "&quot;")
+            .replaceAll("'", "&#039;");
+        }
+
+        function scrollToBottom() {
+          terminalScroll.scrollTop = terminalScroll.scrollHeight;
+        }
+
+        function createBlock() {
+          const block = document.createElement("div");
+          block.className = "block";
+          terminalLog.append(block);
+          return block;
+        }
+
+        async function typeCommand(text) {
+          const block = createBlock();
+          const line = document.createElement("div");
+          const command = document.createElement("span");
+          line.className = "command-line typing-cursor";
+          line.innerHTML = "<span class=\"prompt\">~$</span>";
+          line.append(command);
+          block.append(line);
+
+          for (let index = 0; index <= text.length; index += 1) {
+            command.textContent = text.slice(0, index);
+            scrollToBottom();
+            await delay(index === 0 ? 90 : 12 + Math.random() * 26);
+          }
+
+          line.classList.remove("typing-cursor");
+          return block;
+        }
+
+        function appendOutput(block, line, html = false) {
+          const output = document.createElement("div");
+          output.className = "output-line";
+          if (line === "") {
+            output.innerHTML = "<span class=\"prefix\">&gt;</span>";
+          } else {
+            output.innerHTML = `<span class="prefix">&gt;</span>${html ? line : escapeHtml(line)}`;
+          }
+          block.append(output);
+        }
+
+        function appendNote(lines) {
+          const block = createBlock();
+          for (const line of lines) {
+            const note = document.createElement("div");
+            note.className = "note-line";
+            note.textContent = line;
+            block.append(note);
+          }
+        }
+
+        async function bootTerminal() {
+          commandInput.disabled = true;
+
+          for (const entry of bootLines) {
+            if (entry.kind === "spacer") {
+              await delay(130);
+              continue;
+            }
+
+            if (entry.kind === "command") {
+              await typeCommand(entry.text);
+              continue;
+            }
+
+            if (entry.kind === "note") {
+              appendNote(entry.lines);
+              await delay(180);
+              continue;
+            }
+
+            const block = terminalLog.lastElementChild || createBlock();
+            for (const line of entry.lines) {
+              appendOutput(block, line, entry.html);
+              scrollToBottom();
+              await delay(42);
+            }
+          }
+
+          commandInput.disabled = false;
+          commandInput.focus({ preventScroll: true });
+
+          const queuedCommand = new URLSearchParams(window.location.search).get("command");
+          if (queuedCommand) {
+            await delay(180);
+            runCommand(queuedCommand);
+          }
+        }
+
+        function normalizeCommand(raw) {
+          return raw.trim().replace(/\s+/g, " ");
+        }
+
+        function runCommand(raw) {
+          const command = normalizeCommand(raw);
+          if (!command) return;
+
+          if (command.toLowerCase() === "clear") {
+            terminalLog.textContent = "";
+            scrollToBottom();
+            return;
+          }
+
+          const lower = command.toLowerCase();
+          const key = aliases[command] || aliases[lower] || lower;
+          const block = createBlock();
+          const commandLine = document.createElement("div");
+          commandLine.className = "command-line";
+          commandLine.innerHTML = `<span class="prompt">~$</span>${escapeHtml(command)}`;
+          block.append(commandLine);
+
+          const output = replies[key] || [
+            `command not found: ${escapeHtml(command)}`,
+            "try `help` for available commands."
+          ];
+
+          for (const line of output) {
+            appendOutput(block, line, true);
+          }
+
+          scrollToBottom();
+        }
+
+        function setupTerminalInput() {
+          commandForm.addEventListener("submit", (event) => {
+            event.preventDefault();
+            const command = commandInput.value;
+            commandInput.value = "";
+            runCommand(command);
+          });
+
+          document.addEventListener("keydown", (event) => {
+            if (event.metaKey || event.ctrlKey || event.altKey) return;
+            if (document.activeElement === commandInput) return;
+            if (event.key.length === 1 || event.key === "/") {
+              commandInput.focus();
+            }
+          });
+        }
+
+        function renderPortrait() {
+          const rows = portraitBase.length;
+          const columns = Math.max(...portraitBase.map((line) => line.length));
+          const binary = "010110100101";
+          const lines = portraitBase.map((source, y) => {
+            let line = "";
+            const padded = source.padEnd(columns, " ");
+            for (let x = 0; x < columns; x += 1) {
+              const char = padded[x];
+              if (char === " ") {
+                line += " ";
+                continue;
+              }
+
+              const dx = x / columns - pointer.x;
+              const dy = y / rows - pointer.y;
+              const distance = Math.sqrt(dx * dx + dy * dy);
+              const hot = pointer.active && distance < 0.22;
+              if (hot && (x + y + portraitFrame) % 5 === 0) {
+                line += binary[(x * 3 + y + portraitFrame) % binary.length];
+              } else {
+                line += char;
+              }
+            }
+            return line.replace(/\s+$/g, "");
+          });
+
+          portraitOutput.textContent = lines.join("\n");
+        }
+
+        function setupPortrait() {
+          renderPortrait();
+
+          window.setInterval(() => {
+            portraitFrame += 1;
+            if (pointer.active) renderPortrait();
+          }, 120);
+
+          portraitStage.addEventListener("pointermove", (event) => {
+            const bounds = portraitStage.getBoundingClientRect();
+            pointer = {
+              active: true,
+              x: (event.clientX - bounds.left) / bounds.width,
+              y: (event.clientY - bounds.top) / bounds.height
+            };
+            renderPortrait();
+          });
+
+          portraitStage.addEventListener("pointerleave", () => {
+            pointer.active = false;
+            renderPortrait();
+          });
+        }
+
+        setupTerminalInput();
+        setupPortrait();
+        bootTerminal();
+      })();
+    </script>
   </body>
 </html>
