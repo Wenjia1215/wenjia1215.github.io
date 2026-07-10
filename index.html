@@ -259,29 +259,21 @@
         pointer-events: none;
       }
 
-      .portrait-output {
+      .portrait-canvas {
         position: absolute;
+        top: 50%;
         left: 50%;
-        bottom: clamp(88px, 8vh, 126px);
-        transform: translateX(-50%);
-        margin: 0;
-        color: #737373;
-        font-family: "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
-        font-size: clamp(5.4px, 0.43vw, 7.3px);
-        line-height: 0.92;
-        letter-spacing: 0;
-        text-align: left;
-        white-space: pre;
-        user-select: none;
+        transform: translate(-50%, -50%);
+        width: min(76%, 800px);
+        height: auto;
+        cursor: crosshair;
         opacity: 0.78;
-        text-shadow: 0 0 12px rgba(255, 255, 255, 0.08);
         transition: color 180ms ease, opacity 180ms ease, filter 180ms ease;
       }
 
-      .portrait:hover .portrait-output {
-        color: #909090;
-        opacity: 0.92;
-        filter: contrast(1.12);
+      .portrait:hover .portrait-canvas {
+        opacity: 0.96;
+        filter: contrast(1.12) brightness(1.08);
       }
 
       .scanline {
@@ -366,9 +358,8 @@
           min-height: 58vh;
         }
 
-        .portrait-output {
-          bottom: 72px;
-          font-size: clamp(5.6px, 1.05vw, 8px);
+        .portrait-canvas {
+          width: min(82%, 680px);
         }
       }
 
@@ -397,6 +388,10 @@
 
         .portrait {
           min-height: 50vh;
+        }
+
+        .portrait-canvas {
+          width: min(88%, 520px);
         }
       }
     </style>
@@ -433,7 +428,7 @@
       <aside class="portrait" id="portraitStage" aria-label="ASCII portrait of Wenjia Wang">
         <div class="portrait-grid" aria-hidden="true"></div>
         <div class="noise" aria-hidden="true"></div>
-        <pre class="portrait-output" id="portraitOutput" aria-hidden="true">loading portrait...</pre>
+        <canvas class="portrait-canvas" id="portraitCanvas" aria-hidden="true"></canvas>
         <div class="scanline" aria-hidden="true"></div>
         <p class="portrait-hint" aria-hidden="true">~ hover to interact ~</p>
       </aside>
@@ -447,7 +442,7 @@
           github: "https://github.com/Wenjia1215",
           linkedin: "https://www.linkedin.com/in/wenjiawang-page/",
           scholar: "https://scholar.google.com/citations?user=Zl-yM-kAAAAJ&hl=en&oi=ao",
-          youtube: "https://www.youtube.com/@WenjiaCybersecurity",
+          youtube: "https://www.youtube.com/@WenjiaLectures",
           cv: "assets/files/wenjia-wang-cv.pdf",
           email: "mailto:wenjiabusiness@gmail.com"
         };
@@ -457,74 +452,102 @@
         const commandForm = document.querySelector("#commandForm");
         const commandInput = document.querySelector("#commandInput");
         const portraitStage = document.querySelector("#portraitStage");
-        const portraitOutput = document.querySelector("#portraitOutput");
+        const portraitCanvas = document.querySelector("#portraitCanvas");
+        const portraitContext = portraitCanvas.getContext("2d");
 
-        const portraitBase = [
-          "",
-          "",
-          "",
-          "",
-          "                                 ifffti",
-          "                             iLCC08800Ct1iiLt;",
-          "                          ifLG800000000000000GLti",
-          "                         1LG0G0000000880000088800f",
-          "                       ;LCG0000088000888880G000000Gffi",
-          "                      1CG0088888880008888880G00088888C",
-          "                     iCG088888880000000008000008888888f",
-          "                     f008888888888008888888000888888880t",
-          "                    iG8888888888000008888888808888888088L",
-          "                    f088888888800088880088880880008888088L",
-          "                   ;G8888888888800000GGGGG0008880800088888L",
-          "                   108888888880GCCCLfttttffLCGGG0000088888C",
-          "                   L888888880Cft1111111111ttttffLCG00888880t",
-          "                  iG088880GCft1111iiiiiiiiiii1tttfLC0888888C",
-          "                  tG08880Lfft111ii;;;;;;;;;;;i11tttLC0888880t",
-          "                  L0888GCttt11iii;;;;:::;;;;;;ii11ttLC080888f",
-          "                  L0880Lftt11ii;;;;::,,:::;;;;iii11ttfC08888L",
-          "                 ;C080Cftt111ii;;;:,,,  :::;;;;iii11ttfC0880L;",
-          "                 1000GLftt11iii;;;::,,  :::;;;;iiii11tfLG880t",
-          "                 1000GLtt11iiii;;;;::, ,:::::;;iiii11ttfC080t",
-          "                 iG0GCftt1iiii;;;;:,,   ::::;i1ttt111ttfL08G1",
-          "                  C00Cftt111111i;:,,,   ,:;itttt11ttttttfG8Ci",
-          "                  L00Cfttttttfft11;::  ,::;i;;;;;i1tttttfC0f",
-          "                  t00Ctttft1ii;;i;;;;;::;ii;::;:;;iitttttC0t",
-          "                  iG0Ltttt1ii;;:::;1i:::;ii:;itft1111tCLLCCi",
-          "                   f0Lttt11i1iff1;;;ii;:ii;;i1LCt1tt11fffLt1:",
-          "                   tLLLGti1tt1CL1i;;11;:i1i:;i;;;;iiiiiitfti:",
-          "                  :ttLft1i11i;;;;;;;1t;:1ti;:;:;;;;;i1ii1t1;",
-          "                   itf1iiiii;;;;:::;11;:;i1;::::::::ii;i1tii",
-          "                   ;it1ii1i;:::::::i1i;:;;ii;:::,,:;i;;i1tii",
-          "                   ii11i;ii;:,::::i1ii;:;iiii;;;;;;;:;;i1t1;",
-          "                    i1ti;;;;;;;;:;;i11;:;i1i;:,,,,,::;;i1t1i",
-          "                    i1t1i;;::,,,,,;11i;:;i11i;:::::::;ii1ti;",
-          "                    ;1t1i;;:::,:::;1ii:,:;ii1;;;:::;;iii1ti;",
-          "                     1t1ii;::::::;;111;::it1i;;;;;;;;iii1t1;",
-          "                     1ttiii;;:::::;i11t1111i;;;;;;;;;;ii1t1",
-          "                     itt1iii;;;;:;;;iiiii;;;;ii;;;;;;;iitti",
-          "                      tt1ii;;;;;;;;i;;;;;iiiiii;;;;;;;iit1",
-          "                      it1ii;;;;;;;ii11iiiiii1tti;;;;;ii1ti",
-          "                       1t1iiii;;;;tfti;:::;it1i;;;;;ii1tt;",
-          "                       ittiiiii;;;i1t11iii111i;;;;iiii1tt",
-          "                        1t11i1ii;;;iiiiii1iii;;;;iii11tf1",
-          "                        ittt111i;;;;i;;;i;;;;;;iii11tffti",
-          "                         tfft111iii;;;;;;;;;;;iiii1tLLf1",
-          "                         itfLLt1iiii;;;::::;;;iii1fLf1ti",
-          "                          1ffLCLt1iii;;;::::;;i1tLL111t1:",
-          "                           1fttLCf1iiii;;;;;;itLCtiii1tttiitCL",
-          "                            1t1itLLf1iiiii11tLCL1iiiii1tt11fC0Ci",
-          "                         tf1tt1iiifCCLLLLLLCLf11iiiiii111iii10000GL1",
-          "                        fGftf1iiiii1tfftt11iiiiii;iiiii1ii;;L00088880Li",
-          "                     ifG0t11t1iiiiii11iiiiiiiiiii;;;;iiii;:1000088888880Li",
-          "                  iLG8800fi1t1iii;;ii1iiiii;;;ii;;;;;;ii;:iG88008888888888C1",
-          "                1C8888000Gii11ii;;;;iii;;;;;;;i;;;;;;;;;;iG88000088888888888G1",
-          "               L8888880008Cii1i;;;;;;iii;;;;ii;;;;;;;;;;1G88008808888888888888Ct",
-          "            iL0888888880008Gti;;;;;;;;iiiiiii;;;;;;:::if080008808888888888888888C1",
-          "          ;L08888888888800080C1:::;;;;;;iii;;;;;;;:,;tG880008888888888888888888880f",
-          "        ;f088888888888888800880C1;:;;;;;;;;;;;::::;tG880000088888000800088888888888G1",
-          "       t08888888888888888880800880Lt1;::::::,:;itC08800000008088000000000088888888888t",
-          "     ;C888888888888888888888800008880GCLfttfLCG088800000000000880000000000888888888888",
-          "    t088888888888888888888880000000008888888888000000000000000000000000000800088088888",
+        const portraitRuns = [
+          "166:0",
+          "166:0",
+          "166:0",
+          "166:0",
+          "166:0",
+          "74:0,1:6,2:8,1:7,1:5,87:0",
+          "70:0,1:4,1:7,1:8,5:A,1:9,1:5,3:0,1:7,1:5,81:0",
+          "67:0,1:4,1:5,1:7,15:A,1:7,1:5,79:0",
+          "67:0,1:8,19:A,1:9,1:7,77:0",
+          "66:0,1:7,22:A,1:7,76:0",
+          "64:0,1:4,1:8,24:A,1:8,2:6,73:0",
+          "64:0,1:8,28:A,1:5,72:0",
+          "63:0,1:8,29:A,1:9,72:0",
+          "62:0,1:5,31:A,1:5,71:0",
+          "62:0,1:8,31:A,1:9,71:0",
+          "61:0,1:4,33:A,1:9,70:0",
+          "61:0,1:7,34:A,1:7,69:0",
+          "61:0,1:9,35:A,1:7,68:0",
+          "61:0,37:A,1:6,67:0",
+          "60:0,1:6,16:A,5:9,16:A,1:5,67:0",
+          "60:0,1:7,11:A,2:9,2:8,5:7,2:8,2:9,13:A,1:8,67:0",
+          "60:0,1:9,9:A,1:9,1:8,12:7,2:8,3:9,10:A,67:0",
+          "59:0,1:4,9:A,1:9,1:8,4:7,9:6,2:7,1:8,3:9,9:A,1:5,66:0",
+          "59:0,1:6,7:A,2:9,1:8,3:7,5:6,2:5,1:6,2:5,2:6,2:7,3:8,1:9,8:A,1:8,66:0",
+          "59:0,1:8,6:A,4:8,2:7,3:6,10:5,2:6,1:7,3:8,1:9,7:A,1:9,66:0",
+          "59:0,1:8,5:A,1:9,3:8,2:7,3:6,2:5,5:4,4:5,2:6,3:7,2:8,1:9,7:A,66:0",
+          "59:0,1:9,5:A,1:9,3:8,1:7,2:6,4:5,2:4,2:3,2:4,3:5,3:6,2:7,2:8,2:9,6:A,1:5,65:0",
+          "59:0,5:A,1:9,3:8,2:7,2:6,3:5,1:4,4:3,3:4,3:5,3:6,2:7,2:8,1:9,6:A,1:5,65:0",
+          "58:0,1:5,5:A,1:9,2:8,3:7,3:6,1:5,2:4,5:3,2:4,3:5,3:6,3:7,1:8,2:9,4:A,1:8,66:0",
+          "58:0,1:6,5:A,1:9,1:8,3:7,4:6,2:5,1:4,2:3,1:2,1:3,3:4,3:5,4:6,2:7,2:8,1:9,4:A,1:8,66:0",
+          "58:0,1:5,4:A,1:9,2:8,2:7,4:6,3:5,2:4,3:3,4:4,2:5,2:6,4:7,2:8,1:9,4:A,1:8,66:0",
+          "58:0,1:4,4:A,1:9,2:8,1:7,5:6,2:5,2:4,5:3,3:4,1:5,1:6,1:7,3:8,3:7,1:8,2:9,3:A,1:8,66:0",
+          "59:0,4:A,1:9,2:8,5:7,1:6,2:5,1:4,3:3,2:2,1:3,2:4,1:6,1:8,1:9,2:8,2:7,5:8,1:9,3:A,1:6,66:0",
+          "59:0,1:9,3:A,1:9,5:8,3:9,1:7,1:6,1:5,2:4,1:3,1:2,1:3,2:4,1:5,2:6,1:5,3:6,2:7,4:8,1:9,3:A,1:5,66:0",
+          "59:0,1:7,3:A,3:8,1:9,2:8,2:7,1:6,1:7,1:6,1:5,3:4,1:3,2:4,2:5,1:6,2:4,3:5,1:6,2:7,4:8,3:A,1:4,66:0",
+          "59:0,1:6,3:A,2:8,1:9,1:8,1:7,4:6,2:5,1:4,2:6,1:5,2:4,1:5,2:6,1:5,4:4,1:5,2:6,2:7,3:8,2:A,1:9,67:0",
+          "59:0,1:5,3:A,4:8,3:6,1:5,3:4,1:5,2:6,3:4,1:5,2:6,2:5,1:6,2:8,5:7,1:9,1:A,2:9,1:A,1:7,67:0",
+          "60:0,1:9,2:A,3:8,1:7,4:6,1:7,1:6,3:5,1:6,1:7,1:5,1:4,3:6,1:5,1:6,1:7,2:A,2:8,1:9,1:8,1:7,4:A,1:9,1:7,67:0",
+          "60:0,1:7,2:A,1:9,1:A,3:7,1:8,1:7,1:8,2:A,2:6,1:5,1:6,1:7,2:5,1:6,1:7,1:6,1:5,2:6,1:7,3:6,6:7,2:9,1:7,1:5,66:0",
+          "60:0,1:7,1:9,3:A,1:8,1:6,2:8,2:7,1:8,1:7,2:6,1:5,1:7,1:8,1:6,1:4,1:6,1:8,1:6,2:5,1:6,3:5,3:6,1:7,2:6,1:7,1:8,1:9,1:6,1:4,66:0",
+          "60:0,2:8,1:9,1:8,2:7,1:6,2:7,1:6,6:5,1:6,1:9,1:6,1:4,1:6,1:8,1:6,2:5,2:4,5:5,3:6,1:7,2:8,1:5,67:0",
+          "60:0,1:6,1:8,1:9,1:7,6:6,3:5,2:4,1:5,2:7,1:5,1:4,1:5,2:7,2:5,6:4,1:5,3:6,1:7,1:8,1:7,1:6,67:0",
+          "60:0,1:4,1:6,1:9,1:7,2:6,1:7,1:6,3:5,4:4,1:5,2:7,1:5,1:4,1:5,1:6,1:7,1:6,4:4,2:3,1:4,1:5,1:6,1:5,2:6,1:8,2:6,67:0",
+          "60:0,2:6,2:7,2:6,1:7,1:5,7:4,1:6,1:7,1:6,1:5,1:4,1:5,2:6,1:7,1:6,1:5,3:4,6:5,1:6,1:8,1:6,1:5,67:0",
+          "60:0,1:5,1:6,2:7,1:6,1:5,2:6,1:5,5:4,1:6,3:7,1:5,1:4,1:5,4:6,4:5,3:4,2:5,2:6,2:8,1:6,67:0",
+          "61:0,2:6,1:7,1:6,4:5,1:6,6:5,2:7,1:5,1:4,1:5,1:6,1:7,1:6,1:5,1:4,5:3,1:4,2:5,1:6,1:7,2:8,1:6,67:0",
+          "61:0,1:6,1:7,1:8,1:7,3:5,2:4,4:3,1:4,1:6,2:7,1:5,1:4,1:5,1:6,2:7,1:6,2:4,2:3,3:4,1:5,2:6,1:7,1:8,1:7,1:6,67:0",
+          "61:0,1:5,1:7,1:8,1:7,1:6,2:5,2:4,3:3,1:4,1:5,1:6,1:7,1:6,1:5,2:4,1:5,2:6,1:7,2:5,5:4,1:5,2:6,1:7,1:8,1:6,1:5,67:0",
+          "61:0,1:4,1:7,1:8,1:7,2:6,1:5,6:4,1:5,3:6,1:5,2:3,1:5,3:7,8:5,2:6,1:7,1:8,1:6,1:5,67:0",
+          "62:0,1:7,1:8,1:7,2:6,1:5,5:4,2:5,1:6,2:8,1:6,2:4,1:6,1:8,1:7,1:6,8:5,2:6,1:7,1:8,1:7,1:5,67:0",
+          "62:0,1:7,1:8,1:7,2:6,3:5,3:4,3:5,2:7,1:8,1:7,1:6,2:7,1:6,1:5,1:6,7:5,2:6,1:7,1:8,1:7,1:5,67:0",
+          "62:0,1:6,2:8,1:7,2:6,4:5,2:4,2:5,2:6,3:7,1:6,2:5,3:6,6:5,2:6,1:7,1:8,1:7,68:0",
+          "62:0,1:4,1:7,1:8,1:7,2:6,7:5,3:6,7:5,2:6,6:5,2:6,1:7,1:8,1:6,68:0",
+          "63:0,1:7,1:8,1:7,1:6,7:5,3:6,3:5,2:6,4:7,1:6,6:5,2:6,2:7,69:0",
+          "63:0,1:5,2:7,2:6,6:5,3:6,5:7,2:6,1:7,2:9,5:5,2:6,1:7,1:8,1:6,69:0",
+          "64:0,2:7,4:6,4:5,1:7,2:9,1:7,1:5,2:4,1:3,1:4,1:5,2:7,1:6,5:5,2:6,1:7,1:8,1:6,69:0",
+          "64:0,1:6,1:8,1:7,4:6,3:5,1:7,2:8,1:7,1:6,2:5,1:6,1:7,2:8,1:6,4:5,4:6,2:8,1:5,69:0",
+          "64:0,1:5,1:7,1:8,1:7,4:6,3:5,1:6,1:7,1:8,1:7,2:6,4:7,1:6,3:5,4:6,1:7,2:8,1:5,69:0",
+          "64:0,1:4,1:7,1:8,1:7,2:6,1:7,1:6,4:5,2:6,4:7,3:6,3:5,2:6,3:7,2:8,1:7,70:0",
+          "65:0,1:6,2:8,4:7,1:6,3:5,3:6,1:5,2:6,2:5,1:6,2:5,2:6,3:7,1:8,1:9,1:8,1:6,70:0",
+          "65:0,1:5,3:8,3:7,6:6,8:5,3:6,2:7,1:8,2:A,1:8,1:5,70:0",
+          "66:0,1:7,1:8,2:9,1:8,2:7,4:6,9:5,3:6,1:7,1:8,1:A,1:9,1:8,1:7,71:0",
+          "66:0,1:6,1:8,1:9,2:A,1:8,1:7,4:6,3:5,3:4,3:5,2:6,1:7,1:8,1:A,1:9,1:7,1:8,1:7,71:0",
+          "67:0,1:7,1:8,1:9,2:A,1:8,1:7,3:6,4:5,2:4,2:5,2:6,1:7,1:8,1:A,1:8,1:6,1:7,2:8,1:5,70:0",
+          "67:0,1:5,2:8,1:7,1:9,1:A,1:9,2:7,1:6,4:5,2:4,2:5,1:6,1:7,1:9,1:A,1:9,1:6,3:7,2:8,1:6,1:0,1:5,2:7,65:0",
+          "68:0,1:5,1:8,2:7,1:9,1:A,1:9,2:7,8:6,1:8,2:A,1:8,3:6,2:7,3:8,1:7,3:A,1:8,64:0",
+          "68:0,1:4,1:8,2:7,1:6,1:7,2:A,1:9,5:7,1:8,1:9,3:A,1:7,5:6,1:7,2:8,3:7,1:8,2:A,1:9,1:7,1:5,61:0",
+          "66:0,2:9,2:8,1:7,3:6,1:7,1:9,9:A,1:8,1:6,1:7,6:6,3:7,3:6,6:A,1:7,59:0",
+          "65:0,1:9,1:A,3:8,1:7,5:6,2:8,1:9,2:8,1:6,1:7,11:6,2:7,2:6,1:5,1:8,8:A,1:7,57:0",
+          "63:0,1:5,1:9,1:A,1:8,1:7,2:8,1:7,5:6,3:7,10:6,3:5,2:6,1:7,2:6,2:5,11:A,1:8,1:5,54:0",
+          "61:0,1:7,4:A,3:7,1:8,1:7,5:6,2:7,10:6,5:5,3:6,1:5,1:4,1:7,13:A,1:9,53:0",
+          "59:0,1:8,6:A,1:8,1:6,1:7,1:8,1:7,3:6,1:5,7:6,4:5,2:6,5:5,3:6,1:4,1:5,16:A,1:7,51:0",
+          "58:0,9:A,1:5,1:6,2:7,1:6,2:5,1:6,1:5,4:6,5:5,2:6,7:5,1:6,1:5,1:4,1:9,17:A,1:9,50:0",
+          "56:0,1:5,10:A,1:7,1:5,1:7,2:6,1:5,1:6,3:5,3:6,4:5,3:6,9:5,1:8,20:A,1:6,48:0",
+          "55:0,1:7,12:A,1:7,3:6,6:5,8:6,5:5,1:4,3:5,1:8,22:A,1:8,47:0",
+          "53:0,1:5,15:A,1:8,1:6,8:5,5:6,6:5,3:4,1:5,26:A,46:0",
+          "52:0,1:8,18:A,1:6,2:4,6:5,3:6,7:5,1:4,1:3,1:6,28:A,1:4,44:0",
+          "50:0,1:5,21:A,1:7,2:4,11:5,3:4,1:3,1:5,1:9,30:A,1:5,43:0",
+          "49:0,1:7,24:A,1:8,1:6,1:5,11:4,1:5,1:8,33:A,1:5,42:0",
+          "48:0,1:7,28:A,1:9,1:7,2:5,3:4,1:5,1:6,1:8,37:A,42:0",
+          "47:0,1:8,76:A,42:0",
+          "46:0,1:9,77:A,42:0"
         ];
+
+        function expandPortraitRun(row) {
+          return row.split(",").map((run) => {
+            const [count, value] = run.split(":");
+            return value.repeat(Number.parseInt(count, 10));
+          }).join("");
+        }
+
+        const portraitRows = portraitRuns.map(expandPortraitRun);
 
         const bootLines = [
           { kind: "command", text: "whoami" },
@@ -575,7 +598,7 @@
               `github    <a href="${links.github}">@Wenjia1215</a>`,
               `linkedin  <a href="${links.linkedin}">wenjia wang</a>`,
               `scholar   <a href="${links.scholar}">google scholar</a>`,
-              `youtube   <a href="${links.youtube}">WenjiaCybersecurity</a>`,
+              `youtube   <a href="${links.youtube}">WenjiaLectures</a>`,
               `cv        <a href="${links.cv}">download pdf</a>`,
               `email     <a href="${links.email}">wenjiabusiness@gmail.com</a>`
             ],
@@ -622,7 +645,7 @@
             `github    <a href="${links.github}">@Wenjia1215</a>`,
             `linkedin  <a href="${links.linkedin}">wenjia wang</a>`,
             `scholar   <a href="${links.scholar}">google scholar</a>`,
-            `youtube   <a href="${links.youtube}">WenjiaCybersecurity</a>`
+            `youtube   <a href="${links.youtube}">WenjiaLectures</a>`
           ],
           contact: [
             `email     <a href="${links.email}">wenjiabusiness@gmail.com</a>`,
@@ -677,6 +700,52 @@
 
         let portraitFrame = 0;
         let pointer = { active: false, x: 0.5, y: 0.5 };
+        let mouseX = -1000;
+        let mouseY = -1000;
+        let prevMouseX = -1000;
+        let prevMouseY = -1000;
+        let colorPulse = 0;
+
+        const PORTRAIT_COLS = 166;
+        const PORTRAIT_ROWS = portraitRows.length;
+        const CELL_W = 4.8;
+        const CELL_H = 11;
+        const FONT_SIZE = 8;
+        const RAMP = [
+          " ",
+          "..",
+          ",:;-",
+          "~=+!?",
+          "/\\|<>{}[]",
+          "cvxznrst",
+          "oaepqdbgu",
+          "AXYZSRG094",
+          "OWQB$&#%86",
+          "@#MW$%&B08",
+          "@#$%&WMB8N"
+        ];
+        const OPACITY = [0, 0.18, 0.25, 0.32, 0.45, 0.56, 0.68, 0.78, 0.88, 0.95, 1];
+
+        const rng = (() => {
+          let seed = 1215;
+          return () => {
+            seed = (seed * 1664525 + 1013904223) >>> 0;
+            return seed / 0xFFFFFFFF;
+          };
+        })();
+
+        const portraitLevels = portraitRows.join("").split("").map((value) => {
+          if (value === "A") return 10;
+          return Number.parseInt(value, 10) || 0;
+        });
+        const baseGlyphs = portraitLevels.map((level) => {
+          const charset = RAMP[level] || " ";
+          return charset === " " ? " " : charset[Math.floor(rng() * charset.length)];
+        });
+        const cellNoise = portraitLevels.map(() => rng());
+        const rowNoise = Array.from({ length: PORTRAIT_ROWS }, () => rng());
+        const flickerPhase = portraitLevels.map(() => Math.floor(rng() * 500));
+        const flickerInterval = portraitLevels.map(() => 260 + Math.floor(rng() * 760));
 
         function delay(ms) {
           return new Promise((resolve) => window.setTimeout(resolve, ms));
@@ -831,58 +900,132 @@
           });
         }
 
+        function resizePortrait() {
+          const ratio = window.devicePixelRatio || 1;
+          const baseW = PORTRAIT_COLS * CELL_W;
+          const baseH = PORTRAIT_ROWS * CELL_H;
+          const bounds = portraitStage.getBoundingClientRect();
+          const fit = Math.min(1, (bounds.width * 0.78) / baseW, (bounds.height * 0.78) / baseH);
+
+          portraitCanvas.width = Math.ceil(baseW * ratio);
+          portraitCanvas.height = Math.ceil(baseH * ratio);
+          portraitCanvas.style.width = `${Math.round(baseW * fit)}px`;
+          portraitCanvas.style.height = `${Math.round(baseH * fit)}px`;
+          portraitContext.setTransform(ratio, 0, 0, ratio, 0, 0);
+        }
+
+        function portraitColor(level, x, y, alpha) {
+          const cyan = 128 + level * 8 + Math.sin((x + portraitFrame) * 0.08) * 18;
+          const magenta = 106 + level * 5 + Math.cos((y - portraitFrame) * 0.06) * 16;
+          const warm = 118 + level * 7;
+          return `rgba(${Math.round(warm)}, ${Math.round(cyan)}, ${Math.round(magenta + 42)}, ${alpha})`;
+        }
+
         function renderPortrait() {
-          const rows = portraitBase.length;
-          const columns = Math.max(...portraitBase.map((line) => line.length));
-          const binary = "010110100101";
-          const lines = portraitBase.map((source, y) => {
-            let line = "";
-            const padded = source.padEnd(columns, " ");
-            for (let x = 0; x < columns; x += 1) {
-              const char = padded[x];
-              if (char === " ") {
-                line += " ";
-                continue;
-              }
+          portraitFrame += 1;
+          const baseW = PORTRAIT_COLS * CELL_W;
+          const baseH = PORTRAIT_ROWS * CELL_H;
+          portraitContext.clearRect(0, 0, baseW, baseH);
+          portraitContext.font = `400 ${FONT_SIZE}px "JetBrains Mono", monospace`;
+          portraitContext.textAlign = "center";
+          portraitContext.textBaseline = "middle";
 
-              const dx = x / columns - pointer.x;
-              const dy = y / rows - pointer.y;
-              const distance = Math.sqrt(dx * dx + dy * dy);
-              const hot = pointer.active && distance < 0.22;
-              if (hot && (x + y + portraitFrame) % 5 === 0) {
-                line += binary[(x * 3 + y + portraitFrame) % binary.length];
-              } else {
-                line += char;
-              }
+          const mouseMoving = Math.abs(mouseX - prevMouseX) + Math.abs(mouseY - prevMouseY) > 0.5;
+          const rowShift = new Float32Array(PORTRAIT_ROWS);
+          const hoverRadius = 68;
+
+          for (let row = 0; row < PORTRAIT_ROWS; row += 1) {
+            if (!pointer.active || !mouseMoving) continue;
+            const rowCenterY = (row + 0.5) * CELL_H;
+            const dist = Math.abs(rowCenterY - mouseY);
+            if (dist > hoverRadius * 0.72) continue;
+            const strength = (1 - dist / (hoverRadius * 0.72)) * (0.35 + rowNoise[row] * 0.65);
+            rowShift[row] = Math.max(-14, Math.min(14, (mouseX - prevMouseX) * strength * 1.8));
+          }
+
+          for (let i = 0; i < portraitLevels.length; i += 1) {
+            const level = portraitLevels[i];
+            if (level === 0) continue;
+
+            const x = i % PORTRAIT_COLS;
+            const y = Math.floor(i / PORTRAIT_COLS);
+            const px = (x + 0.5) * CELL_W + rowShift[y];
+            const py = (y + 0.5) * CELL_H;
+            const dx = px - mouseX;
+            const dy = py - mouseY;
+            const dist = Math.sqrt(dx * dx + dy * dy);
+            const threshold = hoverRadius * (0.42 + cellNoise[i] * 0.58);
+            const inHover = pointer.active && dist < threshold;
+            const alpha = OPACITY[level];
+            const charset = RAMP[level];
+
+            let glyph = baseGlyphs[i];
+            if (inHover && mouseMoving && rng() < 0.05) {
+              const roughLevel = Math.max(1, Math.min(10, level + Math.floor((rng() - 0.5) * 4)));
+              const roughSet = RAMP[roughLevel];
+              glyph = roughSet[Math.floor(rng() * roughSet.length)];
+              baseGlyphs[i] = glyph;
+            } else if ((portraitFrame + flickerPhase[i]) % flickerInterval[i] === 0) {
+              glyph = charset[Math.floor(rng() * charset.length)];
+              baseGlyphs[i] = glyph;
             }
-            return line.replace(/\s+$/g, "");
-          });
 
-          portraitOutput.textContent = lines.join("\n");
+            const useColor = inHover || colorPulse > 0;
+            portraitContext.fillStyle = useColor
+              ? portraitColor(level, x, y, alpha)
+              : `rgba(212, 212, 212, ${alpha})`;
+
+            let jitterY = 0;
+            if (inHover && mouseMoving && rng() < 0.16) {
+              jitterY = (rng() < 0.5 ? -1 : 1) * (1 + Math.floor(cellNoise[i] * 6));
+            }
+
+            portraitContext.fillText(glyph, px, py + jitterY);
+
+            if (inHover && mouseMoving) {
+              const push = 5 * (1 - dist / threshold);
+              const ghostX = Math.max(-16, Math.min(16, (mouseX - prevMouseX) * push * 0.45));
+              const ghostY = Math.max(-16, Math.min(16, (mouseY - prevMouseY) * push * 0.45));
+              portraitContext.fillText(glyph, px + ghostX, py + jitterY + ghostY);
+            }
+          }
+
+          if (colorPulse > 0) colorPulse -= 1;
+          prevMouseX = mouseX;
+          prevMouseY = mouseY;
+          window.requestAnimationFrame(renderPortrait);
         }
 
         function setupPortrait() {
+          resizePortrait();
           renderPortrait();
 
-          window.setInterval(() => {
-            portraitFrame += 1;
-            if (pointer.active) renderPortrait();
-          }, 120);
-
-          portraitStage.addEventListener("pointermove", (event) => {
-            const bounds = portraitStage.getBoundingClientRect();
+          portraitCanvas.addEventListener("pointermove", (event) => {
+            const bounds = portraitCanvas.getBoundingClientRect();
+            const baseW = PORTRAIT_COLS * CELL_W;
+            const baseH = PORTRAIT_ROWS * CELL_H;
+            mouseX = (event.clientX - bounds.left) * (baseW / bounds.width);
+            mouseY = (event.clientY - bounds.top) * (baseH / bounds.height);
             pointer = {
               active: true,
-              x: (event.clientX - bounds.left) / bounds.width,
-              y: (event.clientY - bounds.top) / bounds.height
+              x: mouseX / baseW,
+              y: mouseY / baseH
             };
-            renderPortrait();
           });
 
-          portraitStage.addEventListener("pointerleave", () => {
+          portraitCanvas.addEventListener("pointerleave", () => {
             pointer.active = false;
-            renderPortrait();
+            mouseX = -1000;
+            mouseY = -1000;
+            prevMouseX = -1000;
+            prevMouseY = -1000;
           });
+
+          portraitCanvas.addEventListener("click", () => {
+            colorPulse = 180;
+          });
+
+          window.addEventListener("resize", resizePortrait);
         }
 
         setupTerminalInput();
