@@ -5,12 +5,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta
       name="description"
-      content="Wenjia Wang's terminal-style portfolio for trustworthy AI, cybersecurity, and computer science education."
+      content="Wenjia Wang builds and teaches secure, verifiable AI systems—and explores life beyond the screen."
     >
     <meta name="theme-color" content="#080808">
     <link rel="icon" type="image/svg+xml" href="assets/icons/favicon.svg">
     <link rel="shortcut icon" href="assets/icons/favicon.svg">
-    <title>Wenjia Wang | Trustworthy AI + CS Education</title>
+    <title>Wenjia Wang | Secure AI Builder + Teacher</title>
     <style>
       @import url("https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700;800&display=swap");
 
@@ -65,7 +65,7 @@
 
       .terminal {
         min-height: 100vh;
-        padding: 64px 52px 42px;
+        padding: clamp(36px, 5.4vh, 58px) clamp(28px, 3.5vw, 52px) 32px;
         border-right: 1px solid var(--line);
         display: flex;
         justify-content: center;
@@ -81,7 +81,7 @@
         display: flex;
         align-items: center;
         gap: 9px;
-        margin-bottom: 42px;
+        margin-bottom: 28px;
         color: #3f3f3f;
         font-size: 13px;
         font-weight: 700;
@@ -102,6 +102,24 @@
         margin-left: 12px;
       }
 
+      .online {
+        display: inline-flex;
+        align-items: center;
+        gap: 7px;
+        margin-left: auto;
+        color: #6b6b6b;
+        letter-spacing: 0.05em;
+      }
+
+      .online::before {
+        content: "";
+        width: 6px;
+        height: 6px;
+        border-radius: 50%;
+        background: #73b77b;
+        box-shadow: 0 0 0 4px rgba(115, 183, 123, 0.08);
+      }
+
       .terminal-scroll {
         flex: 1;
         overflow-y: auto;
@@ -111,7 +129,7 @@
       }
 
       .block {
-        margin: 0 0 24px;
+        margin: 0 0 17px;
       }
 
       .cmd,
@@ -119,6 +137,7 @@
       .note {
         min-height: 1.55em;
         line-height: 1.55;
+        font-size: clamp(13px, 0.78vw, 15px);
         white-space: pre-wrap;
         word-break: break-word;
       }
@@ -150,10 +169,32 @@
         font-weight: 800;
       }
 
+      .out a.entry {
+        color: #cfcfcf;
+        font-weight: 800;
+        text-decoration-color: rgba(255, 255, 255, 0.2);
+      }
+
+      .out .key {
+        display: inline-block;
+        min-width: 10ch;
+        color: #b9b9b9;
+        font-weight: 800;
+      }
+
+      .out .live {
+        color: var(--accent);
+        font-weight: 800;
+      }
+
       .note {
         color: var(--soft);
         font-style: italic;
         font-weight: 650;
+      }
+
+      .note + .note {
+        margin-top: 2px;
       }
 
       .typing::after,
@@ -363,6 +404,10 @@
           height: 11px;
         }
 
+        .online {
+          display: none;
+        }
+
         .block {
           margin-bottom: 20px;
         }
@@ -380,6 +425,17 @@
           font-size: 4.2px;
         }
       }
+
+      @media (prefers-reduced-motion: reduce) {
+        *,
+        *::before,
+        *::after {
+          scroll-behavior: auto !important;
+          animation-duration: 0.01ms !important;
+          animation-iteration-count: 1 !important;
+          transition-duration: 0.01ms !important;
+        }
+      }
     </style>
   </head>
   <body>
@@ -390,7 +446,8 @@
             <span class="dot"></span>
             <span class="dot"></span>
             <span class="dot"></span>
-            <span class="session">session v4.0 · wenjia@portfolio</span>
+            <span class="session">session v5.0 · wenjia@portfolio</span>
+            <span class="online">available</span>
           </div>
 
           <div class="terminal-scroll" id="terminalScroll">
@@ -406,6 +463,7 @@
                 inputmode="text"
                 spellcheck="false"
                 autocomplete="off"
+                placeholder="type help, then press enter"
                 disabled
               >
             </form>
@@ -488,42 +546,39 @@ CCCt`. .     `  .:Gt`:,::.  ...                  `:   ..     `.             1L</
           github: "https://github.com/Wenjia1215",
           linkedin: "https://www.linkedin.com/in/wenjiawang-page/",
           scholar: "https://scholar.google.com/citations?user=Zl-yM-kAAAAJ&hl=en&oi=ao",
-          youtube: "https://www.youtube.com/@WenjiaLectures",
+          youtube: "https://www.youtube.com/@ComplianceGPT",
           cv: "cv.html",
           email: "mailto:wenjiabusiness@gmail.com"
         };
 
         const boot = [
           { cmd: "whoami" },
-          { out: ["wenjia wang . trustworthy ai systems . cs education . builder"] },
+          { out: ["wenjia wang . geeker . teacher . adventurer"] },
           { gap: true },
-          { cmd: "cat me.txt" },
+          { cmd: "cat about.txt" },
           {
             out: [
-              "i build verifiable ai tools for compliance, security, and learning.",
-              "i teach computer science like systems work: traceable, testable, and useful.",
-              "",
-              "not trying to look academic here. trying to look sharp, real, and hireable."
+              "i build and teach secure ai systems.",
+              "when the screen goes dark, i'm either on the asphalt or a basketball court."
             ]
           },
           { gap: true },
-          { cmd: "ls focus/" },
-          {
-            out: [
-              "trustworthy ai      . citation grounded qa . runtime checks",
-              "cybersecurity       . zero trust . compliance frameworks",
-              "cs education        . programming . systems . capstone mentoring"
-            ]
-          },
-          { gap: true },
-          { cmd: "ls pages/" },
+          { cmd: "ls craft/" },
           {
             html: true,
             out: [
-              '<a href="research.html">research</a>        . verifiable ai, retrieval, compliance qa',
-              '<a href="teaching.html">teaching</a>        . courses, mentoring, capstone judging',
-              '<a href="publications.html">publications</a>    . papers and project outputs',
-              '<a href="cv.html">cv</a>              . full background'
+              '<a class="entry" href="research.html">ComplianceGPT</a> . verifiable rag systems for strict compliance <span class="live">[live]</span>',
+              '<a class="entry" href="teaching.html">core-systems</a> . breaking down computing from the metal up for students',
+              '<a class="entry" href="publications.html">model-auditing</a> . researching how to make llms stop hallucinating'
+            ]
+          },
+          { gap: true },
+          { cmd: "ls life/" },
+          {
+            out: [
+              "running . long distance miles, currently exploring detroit",
+              "basketball . lifelong hooper and die-hard celtics fan",
+              "fuel . fueled almost entirely by good sushi, ramen, and salmon bagel"
             ]
           },
           { gap: true },
@@ -531,29 +586,41 @@ CCCt`. .     `  .:Gt`:,::.  ...                  `:   ..     `.             1L</
           {
             html: true,
             out: [
-              `github    <a href="${links.github}">@Wenjia1215</a>`,
-              `linkedin  <a href="${links.linkedin}">wenjia wang</a>`,
-              `scholar   <a href="${links.scholar}">google scholar</a>`,
-              `youtube   <a href="${links.youtube}">WenjiaLectures</a>`,
-              `email     <a href="${links.email}">wenjiabusiness@gmail.com</a>`
+              `<span class="key">github</span><a href="${links.github}">@wenjia1215</a>`,
+              `<span class="key">linkedin</span><a href="${links.linkedin}">wenjia wang</a>`,
+              `<span class="key">youtube</span><a href="${links.youtube}">@ComplianceGPT</a>`,
+              `<span class="key">scholar</span><a href="${links.scholar}">google scholar</a>`,
+              `<span class="key">email</span><a href="${links.email}">wenjiabusiness@gmail.com</a>`
             ]
           },
           { gap: true },
           {
             note: [
-              "// type: research, teaching, publications, cv, links, contact, or clear"
+              "// final dissertation defense drops this october.",
+              "// keeping it simple. terminal mode active.",
+              "// try: about, craft, life, links, cv, or clear"
             ]
           }
         ];
 
         const replies = {
           help: [
-            "commands: me . research . teaching . publications . cv . links . contact . face . clear",
-            "aliases: whoami, cat me.txt, ls focus/, ls pages/, echo $LINKS"
+            "commands: about . craft . life . research . teaching . publications . cv . links . contact . face . clear",
+            "aliases: whoami, cat about.txt, ls craft/, ls life/, echo $LINKS"
           ],
-          me: [
-            "wenjia builds trustworthy ai systems and teaches practical computer science.",
-            "positioning: verifiable ai + cybersecurity/compliance + cs education."
+          about: [
+            "i build and teach secure ai systems.",
+            "when the screen goes dark, i'm either on the asphalt or a basketball court."
+          ],
+          craft: [
+            '<a class="entry" href="research.html">ComplianceGPT</a> . verifiable rag systems for strict compliance <span class="live">[live]</span>',
+            '<a class="entry" href="teaching.html">core-systems</a> . breaking down computing from the metal up for students',
+            '<a class="entry" href="publications.html">model-auditing</a> . researching how to make llms stop hallucinating'
+          ],
+          life: [
+            "running . long distance miles, currently exploring detroit",
+            "basketball . lifelong hooper and die-hard celtics fan",
+            "fuel . fueled almost entirely by good sushi, ramen, and salmon bagel"
           ],
           research: [
             "research focus: verifiable ai for compliance question answering.",
@@ -574,14 +641,15 @@ CCCt`. .     `  .:Gt`:,::.  ...                  `:   ..     `.             1L</
             "next cv pass: emphasize capstone mentor semesters and showcase judging every spring, summer, and fall since fall 2021."
           ],
           links: [
-            `github    <a href="${links.github}">@Wenjia1215</a>`,
-            `linkedin  <a href="${links.linkedin}">wenjia wang</a>`,
-            `scholar   <a href="${links.scholar}">google scholar</a>`,
-            `youtube   <a href="${links.youtube}">WenjiaLectures</a>`
+            `<span class="key">github</span><a href="${links.github}">@wenjia1215</a>`,
+            `<span class="key">linkedin</span><a href="${links.linkedin}">wenjia wang</a>`,
+            `<span class="key">youtube</span><a href="${links.youtube}">@ComplianceGPT</a>`,
+            `<span class="key">scholar</span><a href="${links.scholar}">google scholar</a>`,
+            `<span class="key">email</span><a href="${links.email}">wenjiabusiness@gmail.com</a>`
           ],
           contact: [
             `email     <a href="${links.email}">wenjiabusiness@gmail.com</a>`,
-            "location  miami, fl"
+            "say hello. thoughtful collaborations, teaching, and secure ai work are welcome."
           ],
           face: [
             "portrait mode: black-and-white ascii generated from the new photo.",
@@ -597,17 +665,17 @@ CCCt`. .     `  .:Gt`:,::.  ...                  `:   ..     `.             1L</
 
         const aliases = {
           "?": "help",
-          "cat me.txt": "me",
-          "cat about.txt": "me",
-          "whoami": "me",
+          "cat me.txt": "about",
+          "cat about.txt": "about",
+          "whoami": "about",
           "ls": "help",
-          "ls focus": "research",
-          "ls focus/": "research",
-          "ls pages": "links",
-          "ls pages/": "links",
+          "ls craft": "craft",
+          "ls craft/": "craft",
+          "ls life": "life",
+          "ls life/": "life",
           "echo $links": "links",
           "echo $LINKS": "links",
-          "about": "me",
+          "me": "about",
           "publication": "publications",
           "pubs": "publications",
           "resume": "cv",
@@ -622,12 +690,13 @@ CCCt`. .     `  .:Gt`:,::.  ...                  `:   ..     `.             1L</
         const terminalScroll = document.querySelector("#terminalScroll");
         const commandForm = document.querySelector("#commandForm");
         const commandInput = document.querySelector("#commandInput");
-        const WORD_DELAY = 100;
-        const MIN_LINE_DELAY = 700;
-        const MAX_LINE_DELAY = 1450;
+        const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+        const WORD_DELAY = 34;
+        const MIN_LINE_DELAY = 180;
+        const MAX_LINE_DELAY = 460;
 
         function delay(ms) {
-          return new Promise((resolve) => window.setTimeout(resolve, ms));
+          return new Promise((resolve) => window.setTimeout(resolve, reduceMotion ? 0 : ms));
         }
 
         function lineDelay(value) {
@@ -668,11 +737,11 @@ CCCt`. .     `  .:Gt`:,::.  ...                  `:   ..     `.             1L</
           for (let index = 0; index <= text.length; index += 1) {
             command.textContent = text.slice(0, index);
             scrollToBottom();
-            await delay(index === 0 ? 180 : 46 + Math.random() * 44);
+            await delay(index === 0 ? 100 : 20 + Math.random() * 28);
           }
 
           line.classList.remove("typing");
-          await delay(320);
+          await delay(160);
           return group;
         }
 
@@ -700,7 +769,7 @@ CCCt`. .     `  .:Gt`:,::.  ...                  `:   ..     `.             1L</
 
           for (const item of boot) {
             if (item.gap) {
-              await delay(520);
+              await delay(150);
               continue;
             }
 
