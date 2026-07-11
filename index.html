@@ -7,79 +7,72 @@
       name="description"
       content="Wenjia Wang's terminal-style portfolio for trustworthy AI, cybersecurity, and computer science education."
     >
-    <meta name="theme-color" content="#0a0a0a">
+    <meta name="theme-color" content="#080808">
     <link rel="icon" type="image/svg+xml" href="assets/icons/favicon.svg">
     <link rel="shortcut icon" href="assets/icons/favicon.svg">
-    <title>Wenjia Wang | Terminal Portfolio</title>
+    <title>Wenjia Wang | Trustworthy AI + CS Education</title>
     <style>
-      @import url("https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&display=swap");
+      @import url("https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700;800&display=swap");
 
       :root {
         color-scheme: dark;
-        --bg: #0a0a0a;
-        --panel: #101010;
-        --text: #cfcfcf;
-        --muted: #626262;
-        --soft: #8f8f8f;
-        --bright: #ededed;
-        --link: #b8b8b8;
-        --live: #e05b22;
-        --accent: #a87592;
-        --divider: rgba(255, 255, 255, 0.11);
-        --selection: rgba(255, 255, 255, 0.14);
+        --bg: #080808;
+        --line: rgba(255, 255, 255, 0.12);
+        --text: #d6d6d6;
+        --muted: #8a8a8a;
+        --soft: #575757;
+        --bright: #f2f2f2;
+        --accent: #d86a2b;
+        --tag: #a87b98;
       }
 
       * {
         box-sizing: border-box;
       }
 
-      html {
+      html,
+      body {
         min-height: 100%;
-        background: var(--bg);
       }
 
       body {
-        min-height: 100%;
         margin: 0;
         overflow-x: hidden;
-        background:
-          radial-gradient(circle at 76% 78%, rgba(255, 255, 255, 0.035), transparent 26rem),
-          var(--bg);
+        background: var(--bg);
         color: var(--text);
         font-family: "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
         font-size: 16px;
         letter-spacing: 0;
       }
 
-      ::selection {
-        background: var(--selection);
-      }
-
       a {
-        color: var(--link);
+        color: var(--text);
         text-decoration-color: rgba(255, 255, 255, 0.34);
-        text-underline-offset: 0.2em;
-        transition: color 160ms ease, text-decoration-color 160ms ease;
+        text-underline-offset: 0.22em;
       }
 
-      a:hover {
+      a:hover,
+      a:focus-visible {
         color: var(--bright);
-        text-decoration-color: rgba(255, 255, 255, 0.82);
+        text-decoration-color: rgba(255, 255, 255, 0.9);
       }
 
-      .layout {
+      .page {
         display: grid;
-        grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+        grid-template-columns: minmax(0, 47vw) minmax(0, 53vw);
         min-height: 100vh;
-        isolation: isolate;
       }
 
       .terminal {
-        width: min(100%, 720px);
         min-height: 100vh;
-        justify-self: end;
-        padding: 66px 54px 44px;
-        border-right: 1px solid var(--divider);
+        padding: 64px 52px 42px;
+        border-right: 1px solid var(--line);
+        display: flex;
+        justify-content: center;
+      }
+
+      .terminal-inner {
+        width: min(100%, 680px);
         display: flex;
         flex-direction: column;
       }
@@ -87,18 +80,17 @@
       .terminal-header {
         display: flex;
         align-items: center;
-        gap: 10px;
-        min-height: 22px;
+        gap: 9px;
         margin-bottom: 42px;
-        color: #404040;
-        font-size: 14px;
-        font-weight: 600;
+        color: #3f3f3f;
+        font-size: 13px;
+        font-weight: 700;
       }
 
       .dot {
         width: 13px;
         height: 13px;
-        border: 2px solid #555;
+        border: 2px solid #565656;
         display: inline-block;
       }
 
@@ -106,7 +98,7 @@
         margin-left: -4px;
       }
 
-      .session-label {
+      .session {
         margin-left: 12px;
       }
 
@@ -114,83 +106,65 @@
         flex: 1;
         overflow-y: auto;
         padding-right: 10px;
-        scrollbar-width: thin;
         scrollbar-color: #2d2d2d transparent;
-      }
-
-      .terminal-scroll::-webkit-scrollbar {
-        width: 8px;
-      }
-
-      .terminal-scroll::-webkit-scrollbar-thumb {
-        background: #2d2d2d;
+        scrollbar-width: thin;
       }
 
       .block {
         margin: 0 0 24px;
       }
 
-      .command-line,
-      .output-line,
-      .note-line {
+      .cmd,
+      .out,
+      .note {
         min-height: 1.55em;
         line-height: 1.55;
         white-space: pre-wrap;
         word-break: break-word;
       }
 
-      .command-line {
+      .cmd {
         color: var(--bright);
-        font-weight: 700;
+        font-weight: 800;
       }
 
-      .prompt {
-        color: var(--soft);
-        margin-right: 8px;
-        font-weight: 500;
-      }
-
+      .prompt,
       .prefix {
-        color: var(--soft);
+        color: var(--muted);
         margin-right: 8px;
-      }
-
-      .output-line {
-        color: var(--soft);
         font-weight: 600;
       }
 
-      .output-line strong {
-        color: var(--text);
-        font-weight: 700;
+      .out {
+        color: var(--muted);
+        font-weight: 650;
       }
 
-      .output-line .live {
-        color: var(--live);
-        font-weight: 700;
-      }
-
-      .output-line .soon,
-      .output-line .tag {
+      .out .hot {
         color: var(--accent);
-        font-weight: 700;
+        font-weight: 800;
       }
 
-      .note-line {
-        color: #565656;
+      .out .tag {
+        color: var(--tag);
+        font-weight: 800;
+      }
+
+      .note {
+        color: var(--soft);
         font-style: italic;
-        font-weight: 600;
+        font-weight: 650;
       }
 
-      .typing-cursor::after,
+      .typing::after,
       .input-shell::after {
         content: "";
         display: inline-block;
         width: 0.62em;
-        height: 1.05em;
+        height: 1.08em;
         margin-left: 4px;
         transform: translateY(0.18em);
-        background: rgba(255, 255, 255, 0.72);
+        background: rgba(255, 255, 255, 0.78);
         animation: blink 0.9s steps(2, start) infinite;
       }
 
@@ -198,9 +172,9 @@
         display: flex;
         align-items: center;
         min-height: 34px;
-        margin-top: 16px;
+        margin-top: 12px;
         color: var(--bright);
-        font-weight: 700;
+        font-weight: 800;
       }
 
       .input-shell:focus-within::after {
@@ -217,96 +191,106 @@
         color: var(--bright);
         caret-color: var(--bright);
         font: inherit;
-        font-weight: 700;
-      }
-
-      .input-shell input::placeholder {
-        color: #4c4c4c;
+        font-weight: 800;
       }
 
       .portrait {
         position: relative;
         min-height: 100vh;
         overflow: hidden;
-        cursor: crosshair;
+        display: grid;
+        place-items: center;
         background:
-          linear-gradient(90deg, rgba(255, 255, 255, 0.012), transparent 16%),
+          radial-gradient(circle at 52% 44%, rgba(255, 255, 255, 0.055), transparent 19rem),
+          linear-gradient(90deg, rgba(255, 255, 255, 0.018), transparent 18%),
           var(--bg);
       }
 
-      .portrait-grid {
+      .portrait::before {
+        content: "";
         position: absolute;
         inset: 0;
-        opacity: 0;
+        opacity: 0.085;
         background-image:
-          linear-gradient(rgba(255, 255, 255, 0.08) 1px, transparent 1px),
-          linear-gradient(90deg, rgba(255, 255, 255, 0.08) 1px, transparent 1px);
-        background-size: 24px 24px;
-        mask-image: radial-gradient(circle at 52% 70%, black, transparent 57%);
+          linear-gradient(rgba(255, 255, 255, 0.16) 1px, transparent 1px),
+          linear-gradient(90deg, rgba(255, 255, 255, 0.16) 1px, transparent 1px);
+        background-size: 26px 26px;
+        mask-image: radial-gradient(circle at 52% 52%, black, transparent 62%);
         pointer-events: none;
       }
 
-      .portrait-hint {
-        position: absolute;
-        left: 50%;
-        bottom: 34px;
-        transform: translateX(-50%);
-        color: #343434;
-        font-size: 13px;
-        font-style: italic;
-        font-weight: 700;
-        white-space: nowrap;
-        pointer-events: none;
-      }
-
-      .portrait-canvas {
-        position: absolute;
-        top: 50%;
-        left: 50%;
-        transform: translate(-50%, -50%);
-        width: min(76%, 800px);
-        height: auto;
-        cursor: crosshair;
-        opacity: 0.9;
-        filter: drop-shadow(0 0 22px rgba(104, 210, 255, 0.12));
-        transition: color 180ms ease, opacity 180ms ease, filter 180ms ease;
-      }
-
-      .portrait:hover .portrait-canvas {
-        opacity: 1;
-        filter:
-          saturate(1.22)
-          contrast(1.14)
-          brightness(1.08)
-          drop-shadow(0 0 30px rgba(255, 78, 205, 0.18));
-      }
-
-      .scanline {
+      .portrait::after {
+        content: "";
         position: absolute;
         inset: 0;
         background: linear-gradient(
           to bottom,
           transparent,
-          transparent 49%,
-          rgba(255, 255, 255, 0.018) 50%,
-          transparent 51%,
+          transparent 48%,
+          rgba(255, 255, 255, 0.024) 50%,
+          transparent 52%,
           transparent
         );
         background-size: 100% 7px;
-        mix-blend-mode: screen;
-        opacity: 0.65;
+        opacity: 0.72;
         pointer-events: none;
       }
 
-      .noise {
+      .portrait-frame {
+        position: relative;
+        width: min(88%, 760px);
+        padding-bottom: 84px;
+      }
+
+      .ascii-face {
+        margin: 0;
+        color: rgba(232, 232, 232, 0.88);
+        font-size: clamp(5px, 0.74vw, 10px);
+        font-weight: 700;
+        line-height: 0.84;
+        letter-spacing: 0;
+        white-space: pre;
+        text-shadow: 0 0 18px rgba(255, 255, 255, 0.15);
+        transform: scaleX(0.96);
+        transform-origin: center;
+        transition: filter 180ms ease, opacity 180ms ease, transform 180ms ease;
+        user-select: none;
+      }
+
+      .portrait:hover .ascii-face {
+        opacity: 1;
+        filter: contrast(1.2) brightness(1.08);
+        transform: scaleX(0.98) translateY(-2px);
+      }
+
+      .portrait-actions {
         position: absolute;
-        inset: -80px;
-        opacity: 0.01;
-        background-image:
-          repeating-radial-gradient(circle at 10% 20%, #fff 0 1px, transparent 1px 4px),
-          repeating-radial-gradient(circle at 80% 70%, #fff 0 1px, transparent 1px 5px);
-        animation: drift 18s linear infinite;
-        pointer-events: none;
+        right: 26px;
+        bottom: 26px;
+        left: 26px;
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 10px;
+        z-index: 2;
+      }
+
+      .action {
+        min-height: 38px;
+        padding: 9px 13px;
+        border: 1px solid rgba(255, 255, 255, 0.18);
+        background: rgba(8, 8, 8, 0.76);
+        color: var(--text);
+        text-decoration: none;
+        font-size: 13px;
+        font-weight: 800;
+        backdrop-filter: blur(12px);
+      }
+
+      .action:hover,
+      .action:focus-visible {
+        border-color: rgba(255, 255, 255, 0.48);
+        background: rgba(255, 255, 255, 0.08);
       }
 
       .sr-only {
@@ -331,40 +315,37 @@
         }
       }
 
-      @keyframes drift {
-        from {
-          transform: translate3d(0, 0, 0);
-        }
-        to {
-          transform: translate3d(-48px, 32px, 0);
-        }
-      }
-
       @media (max-width: 980px) {
         body {
           overflow-y: auto;
         }
 
-        .layout {
+        .page {
           display: flex;
-          min-height: 100vh;
           flex-direction: column;
         }
 
         .terminal {
-          width: 100%;
           min-height: auto;
+          padding: 38px 24px 30px;
           border-right: 0;
-          border-bottom: 1px solid var(--divider);
-          padding: 40px 26px 30px;
+          border-bottom: 1px solid var(--line);
+        }
+
+        .terminal-header {
+          margin-bottom: 30px;
         }
 
         .portrait {
-          min-height: 58vh;
+          min-height: 62vh;
         }
 
-        .portrait-canvas {
-          width: min(82%, 680px);
+        .portrait-frame {
+          width: min(94%, 720px);
+        }
+
+        .ascii-face {
+          font-size: clamp(4.6px, 1.1vw, 8px);
         }
       }
 
@@ -377,11 +358,6 @@
           padding: 28px 18px 24px;
         }
 
-        .terminal-header {
-          margin-bottom: 30px;
-          font-size: 12px;
-        }
-
         .dot {
           width: 11px;
           height: 11px;
@@ -392,50 +368,115 @@
         }
 
         .portrait {
-          min-height: 50vh;
+          min-height: 56vh;
         }
 
-        .portrait-canvas {
-          width: min(88%, 520px);
+        .portrait-frame {
+          width: 98%;
+          padding-bottom: 98px;
+        }
+
+        .ascii-face {
+          font-size: 4.2px;
         }
       }
     </style>
   </head>
   <body>
-    <main class="layout" aria-label="Wenjia Wang terminal portfolio">
+    <main class="page" aria-label="Wenjia Wang terminal portfolio">
       <section class="terminal" aria-label="Interactive terminal biography">
-        <div class="terminal-header" aria-hidden="true">
-          <span class="dot"></span>
-          <span class="dot"></span>
-          <span class="dot"></span>
-          <span class="session-label">session v3.2</span>
-        </div>
+        <div class="terminal-inner">
+          <div class="terminal-header" aria-hidden="true">
+            <span class="dot"></span>
+            <span class="dot"></span>
+            <span class="dot"></span>
+            <span class="session">session v4.0 · wenjia@portfolio</span>
+          </div>
 
-        <div class="terminal-scroll" id="terminalScroll">
-          <div id="terminalLog" aria-live="polite"></div>
+          <div class="terminal-scroll" id="terminalScroll">
+            <div id="terminalLog" aria-live="polite"></div>
 
-          <form class="input-shell" id="commandForm" autocomplete="off">
-            <label class="sr-only" for="commandInput">Type a command</label>
-            <span class="prompt" aria-hidden="true">~$</span>
-            <input
-              id="commandInput"
-              name="command"
-              type="text"
-              inputmode="text"
-              spellcheck="false"
-              autocomplete="off"
-              disabled
-            >
-          </form>
+            <form class="input-shell" id="commandForm" autocomplete="off">
+              <label class="sr-only" for="commandInput">Type a command</label>
+              <span class="prompt" aria-hidden="true">~$</span>
+              <input
+                id="commandInput"
+                name="command"
+                type="text"
+                inputmode="text"
+                spellcheck="false"
+                autocomplete="off"
+                disabled
+              >
+            </form>
+          </div>
         </div>
       </section>
 
-      <aside class="portrait" id="portraitStage" aria-label="ASCII portrait of Wenjia Wang">
-        <div class="portrait-grid" aria-hidden="true"></div>
-        <div class="noise" aria-hidden="true"></div>
-        <canvas class="portrait-canvas" id="portraitCanvas" aria-hidden="true"></canvas>
-        <div class="scanline" aria-hidden="true"></div>
-        <p class="portrait-hint" aria-hidden="true">~ hover to interact ~</p>
+      <aside class="portrait" aria-label="ASCII portrait and page links">
+        <div class="portrait-frame">
+          <pre class="ascii-face" aria-hidden="true">                                                     ,t,                 .`.
+                                                                         ..
+                                                         .. .
+                                                        ...`````.
+                                .``,,;;;;;;`.           .`,:iii:,.       . ..
+ .                            `;;:,. .;;1ii;:, .        .,;fG0Gt:.       ....
+          .                  ,ti11ti: ,,,:;::``,:       `,f@@@@0:,:.     ....
+     .   .`                 ;1;:,.:;,.      ..  .,,.    `:t8@@@L,iCi     ....
+                           i1;:`.                  `i   .,;tLLt:.iGi     ..
+                         .tf;,.    ```,::,.         i;  ..`,:,`. :t:     .
+                        .tt1,`  ,ifCCCCLLft1:`      .i.   ....   `;.
+                        tL;..`:fCG00GGGCLfLfti,`     ,`   ...`;:`,:.     ..
+                       .ti  .iCGG00800GCLfff1:,,,    `,  ... `;:..`        ...
+.                      `1   iG0GG00000GCLftt;,``,,   ,:  .               .;t;.
+.,1t:`.                i;`,:L80GGG000GCCft1i:,``,:,  `ii,              .,itf:
+`G@@@8;                iti`:C80GG0000GCCftft1;,``;;   1@8`            .`,;tLLi
+`L@@@@1                ,1,`:L080G000GCLCfLLti;:,,i;   ,Gt,`             .;t0@@
+.`;LGt,`                ,,::C08Cti:;11tf11:.    `1t. ... ..       ...,. ;G080G
+ ...,,:`        `11,    ,;,;08GtLC1:,,tf:.  :i:  tL`   ...        .t0@f t@@@80
+``. `;i,        C@@@:   ::.i88CCL1;::iCC;. `:,`..:L;    .         :@@@G`L@@@@C
+:t1  `:,        i8@0,   :1:t@8Gfft,`;L881 ,1i:.  .t1 .. .        `i@@@C`L@@@@L
+1@8:.`;;    .    `:,.. `C;;L@888Gf1if8881.i1i;,`..if`.` ``::.    1LG80L;L@@@@C
+:ii,::1t,i;```  ,,  .`..1itC@8800CLG88881.,1111i;`iL`,tCG;ii`   .tGL:1@0C@@@@C
+;`.`;iff;Lf,`.  `` .`i; .1LG8800GG000880;  ;1tf1:.it`C@@@f:;`   .iti``ttL8@@8L
+i,..:;tt.`,,`     .,:fL1`iG80GGGG0GCC080i  ,tt1;`.:i:G8GLi:::`..,,. . .:f8@@8L
+11, `,11. .:,.     .`1t:.,G80GCCGGLtt08G1`  ii;`..;;:;:;i:.:;,`,;,  ...,t08@0f
+ii, .`;;   ..        :,  :LtGCLLCCftGt11,   ,;`...;:,,:i1: :i:`,:,  .. `10880f
+`.  ....           ..,, .`i1CCfGGCCG0Gf:    .:..`.::`..,;,.:i1:...  .. .1088Gf
+    ..            .,:::,` `;fCL00GGLCGCfi    ..`,`:;`,`,;,.:;i,        .iC0Gft
+  .  ` ..   .....  `,`,,,,:;fLC00Gf,:i;:`    ..`,,,i;:..,. `,`.        .1CCt,,
+.`.  ,:::;::::;;:,,,,,::;ii1ffL0GCttCCfi,.   ..`,``:,,,``  ..`,..      .1CCt,
+,,.  `,,,:,,,::;;i111iiii;;;1ftCCLLCGC1:,. .  .`,.::,,::,`.```,,:,  `:::tCCf:
+;:,,``,,,,,,,,:;;i111i;;:::::;1GfLCCCCCf1;`. ```,,::::::;1tt11tff1.`tCCG000Gt:
+;::;;;;;;;;;;;;iiii;;;;:::;;;i;0LiLGGCLti;`..`.., `i1111i1fLCLLCC1..fGGG0000GC
+:;;;;iii111iiiiiiiiiiii;;;;;Li.00Ciit1:,`.  .  .,. `ittft1itLCCCf:  :LCCCCCCCG
+111ttfLLLffttttttttttttt11ifC ,0GGC1:,`     .  .`    `1ttti;1fLLfi,,:1ffffffft
+ttffLLLLLfftttttttttt111tG1Ci :0GGGGf;,,`.  .  .    `  ,itt1i1ffffft111ttftttt
+ttffffffttt11111tt111111ff;L, :GGGGGGL;`.   ...     .`   :1ttttffffffttfffffff
+fffffLLLLLLLLLLLLLLf1i::t1i1` `CGGCCCGL;... ...      .     `;tffffffffttfttttt
+LLLCCCCCCCCCCCCCLt1i,`.,t1i;.  fGCCCCCLf;.. .                 `;tLCGGGLtt11111
+CCCCCCCCCCCCLLLt;i:...`:1i;;    tCLLLf1i,.                       `;fC00Gft1111
+CCCCGGGGCCLfft:,i,.....:1;;i     ;fLLf1i:,`.                        ,1LGGGCt11
+GGGGGGGCCGGGt:`:. ``..`,i:i;       ;tf1i;;11                          .1G88GLt
+GGGGGGGGGCC:,`,..``,:```:i11          .`,,`         .                   1GG0GC
+GGGGGGGL1;;,,`. .ti`.,,,,;;;                        `.        .  `      ,fLC00
+GGGGG0L1;i;:,` ``i:`,,,:;;``                        i.           `,      ;LLC0
+GGGG0G1;:;:::` `,`   ..``..`                       .i.            i`,`   .tffL
+GGCCCf:,,`.::  ;i: .:....                          ,:.           `;::,    iLft
+1111t1``.  :. `;;  `;`,:,.. `                      ;. .          .,`      ,fff
+1111t;.`...:  ,:  .,;,,,``  `                     .;  .           ,`       1Lf
+CCCGt,. .  `  ,.  ,::,,,`:. `.                    ,:  .           `.       ;ff
+CCGG;``      .,  `,,```,:,  ..                    ;.  .           ..       `ff
+CCGL,...     `  .:i:..,:;`  ..                    ;               .         tf
+CCCt`. .     `  .:Gt`:,::.  ...                  `:   ..     `.             1L</pre>
+
+          <nav class="portrait-actions" aria-label="Primary pages">
+            <a class="action" href="research.html">research</a>
+            <a class="action" href="teaching.html">teaching</a>
+            <a class="action" href="publications.html">publications</a>
+            <a class="action" href="cv.html">cv</a>
+          </nav>
+        </div>
       </aside>
     </main>
 
@@ -448,203 +489,89 @@
           linkedin: "https://www.linkedin.com/in/wenjiawang-page/",
           scholar: "https://scholar.google.com/citations?user=Zl-yM-kAAAAJ&hl=en&oi=ao",
           youtube: "https://www.youtube.com/@WenjiaLectures",
-          cv: "assets/files/wenjia-wang-cv.pdf",
+          cv: "cv.html",
           email: "mailto:wenjiabusiness@gmail.com"
         };
 
-        const terminalLog = document.querySelector("#terminalLog");
-        const terminalScroll = document.querySelector("#terminalScroll");
-        const commandForm = document.querySelector("#commandForm");
-        const commandInput = document.querySelector("#commandInput");
-        const portraitStage = document.querySelector("#portraitStage");
-        const portraitCanvas = document.querySelector("#portraitCanvas");
-        const portraitContext = portraitCanvas.getContext("2d");
-
-        const portraitRuns = [
-          "166:0",
-          "166:0",
-          "166:0",
-          "49:0,1:1,116:0",
-          "166:0",
-          "29:0,1:1,15:0,1:8,1:9,1:8,1:9,1:8,28:0,5:1,1:0,1:1,2:0,1:1,78:0",
-          "34:0,1:8,30:A,2:9,1:8,1:7,1:8,1:0,6:2,1:0,6:1,1:0,2:1,1:0,7:1,71:0",
-          "31:0,46:A,1:3,3:2,8:1,1:0,1:1,1:0,3:1,2:0,2:1,67:0",
-          "27:0,1:8,54:A,1:6,1:5,1:4,4:3,5:2,3:1,2:0,2:1,1:0,1:1,63:0",
-          "19:0,1:2,6:0,59:A,5:5,2:4,3:3,2:2,1:0,1:1,1:2,1:0,4:1,20:0,1:3,19:0,1:3,20:0",
-          "23:0,71:A,1:6,1:5,2:4,1:3,4:2,1:0,3:1,59:0",
-          "21:0,77:A,1:6,1:5,1:4,2:3,2:2,1:0,3:1,30:0,1:2,26:0",
-          "18:0,1:9,1:8,25:A,7:9,3:8,46:A,2:6,1:5,2:2,1:1,1:0,3:1,55:0",
-          "17:0,5:A,5:9,8:A,3:9,1:8,1:7,13:0,2:3,1:2,1:3,1:2,5:3,4:4,37:A,1:6,1:3,1:2,3:1,1:2,1:1,54:0",
-          "17:0,3:A,2:9,9:A,1:9,1:8,2:7,2:0,1:1,14:0,9:3,1:2,1:3,1:2,1:3,1:2,6:3,1:4,32:A,1:6,1:3,2:2,1:0,1:1,1:2,2:1,52:0",
-          "17:0,1:A,2:9,6:A,1:9,2:8,2:7,19:0,7:3,1:1,1:3,1:2,8:3,1:2,9:3,1:9,27:A,1:6,1:3,2:2,1:0,1:1,2:0,2:1,50:0",
-          "17:0,1:9,5:A,1:8,2:7,23:0,1:3,1:1,12:3,1:2,12:3,1:2,6:3,1:9,23:A,1:5,1:4,3:2,4:1,19:0,1:2,30:0",
-          "18:0,2:A,1:9,1:8,26:0,25:3,1:2,5:3,1:2,2:3,1:2,4:3,1:2,21:A,4:2,2:0,1:2,1:0,1:1,48:0",
-          "18:0,2:8,1:7,26:0,1:2,12:3,1:2,4:3,1:2,11:3,1:2,9:3,1:2,2:9,19:A,1:5,3:2,1:0,5:2,47:0",
-          "46:0,7:2,2:3,1:1,32:3,4:9,17:A,1:6,1:3,1:2,1:0,5:2,48:0",
-          "46:0,9:2,4:3,1:1,10:3,1:2,8:3,1:2,9:3,3:9,18:A,1:4,9:2,46:0",
-          "30:0,1:3,15:0,9:2,2:1,22:3,1:2,8:3,5:9,17:A,1:5,1:4,2:3,7:2,17:0,1:2,1:0,1:3,25:0",
-          "44:0,11:2,1:3,1:2,18:3,1:2,10:3,1:2,2:3,5:9,16:A,1:3,1:4,1:3,1:4,2:3,3:2,2:0,1:2,44:0",
-          "29:0,1:2,14:0,7:2,1:1,2:2,1:1,34:3,6:9,1:A,1:9,13:A,5:3,1:4,1:3,5:2,27:0,1:2,16:0",
-          "43:0,5:2,2:3,1:1,3:2,2:1,15:3,1:2,8:3,1:2,1:3,1:2,7:3,1:9,1:8,6:9,12:A,2:9,4:3,1:4,2:3,4:2,43:0",
-          "43:0,5:2,1:3,1:2,1:3,2:2,2:4,1:5,1:4,9:5,2:4,4:5,1:4,8:5,4:3,7:5,17:A,2:6,2:5,4:3,1:2,4:3,44:0",
-          "42:0,3:2,1:0,2:2,3:3,2:2,3:4,15:5,1:4,5:5,4:6,4:3,7:5,17:A,1:6,3:5,10:3,1:2,42:0",
-          "42:0,11:3,2:4,11:5,1:4,7:6,13:A,1:6,2:5,20:A,1:6,2:5,7:3,1:2,3:3,42:0",
-          "11:0,1:1,29:0,12:3,1:4,9:5,4:6,16:A,1:9,26:A,1:6,1:5,1:4,12:3,41:0",
-          "33:0,1:8,7:7,2:9,6:3,1:2,3:3,9:5,3:6,17:A,2:9,27:A,1:6,1:5,12:3,41:0",
-          "41:0,12:3,1:2,2:3,4:9,19:A,5:3,26:A,1:3,1:9,11:3,1:2,1:3,10:0,1:3,30:0",
-          "5:0,2:1,13:0,1:3,20:0,6:3,1:2,1:3,1:2,6:3,7:9,8:A,2:5,4:4,2:9,7:3,24:A,1:9,14:3,41:0",
-          "40:0,6:3,2:2,8:3,3:9,1:A,6:9,4:A,1:4,1:5,4:6,3:A,2:4,5:3,3:9,5:A,5:9,12:A,3:3,1:2,11:3,40:0",
-          "33:0,1:7,5:8,1:6,1:4,6:3,1:2,3:3,3:2,1:1,1:3,1:A,5:9,2:A,1:9,20:A,1:3,2:A,12:9,12:A,10:3,1:2,3:3,40:0",
-          "32:0,1:8,6:A,1:8,4:A,7:3,1:2,2:0,1:2,1:3,1:5,3:9,7:A,1:9,11:A,5:4,1:3,1:4,3:A,2:9,1:A,7:9,13:A,1:4,1:3,1:9,1:3,1:2,8:3,1:1,40:0",
-          "21:0,1:2,12:0,4:8,1:0,11:3,6:2,1:4,2:9,8:A,1:9,4:A,1:9,6:A,1:3,1:4,1:3,1:4,1:3,2:4,8:A,6:9,14:A,1:4,12:3,39:0",
-          "8:0,1:1,11:0,1:3,18:0,3:3,1:2,1:3,2:4,1:1,5:2,1:0,3:2,1:3,1:2,13:3,1:2,1:3,1:2,2:3,2:2,19:3,1:2,2:3,1:4,14:A,1:2,11:3,9:0,1:3,9:0,1:1,4:0,1:3,14:0",
-          "25:0,1:3,13:0,4:3,1:4,1:3,2:2,1:0,8:2,2:3,1:2,8:3,1:2,10:3,1:2,6:3,1:2,15:3,14:A,1:4,6:3,1:2,4:3,13:0,1:1,25:0",
-          "34:0,1:2,1:0,3:2,1:6,1:4,1:3,1:2,1:3,5:2,1:0,1:2,1:0,3:2,38:3,1:2,5:3,1:2,2:3,1:4,12:A,1:4,10:3,1:4,1:1,1:0,1:1,1:0,1:1,34:0",
-          "35:0,1:2,1:0,2:2,2:4,1:2,1:0,4:2,2:0,6:2,7:3,1:2,2:3,1:2,7:3,1:1,12:3,1:2,16:3,12:A,6:3,1:2,2:3,1:1,2:4,2:1,23:0,1:2,13:0",
-          "35:0,3:2,1:4,2:3,1:0,1:2,1:0,1:2,1:0,9:2,1:1,6:3,1:2,4:3,2:2,7:3,1:1,3:3,3:2,1:3,1:1,18:3,1:9,11:A,2:3,1:2,7:3,3:4,3:1,35:0",
-          "36:0,3:1,1:2,2:3,1:2,1:0,2:2,1:1,6:2,1:0,1:2,6:3,1:2,16:3,1:1,5:3,1:2,18:3,1:9,1:3,9:A,1:4,6:3,2:2,1:3,3:4,3:1,30:0,1:1,5:0",
-          "37:0,2:1,1:2,2:4,1:2,4:3,5:2,1:1,3:2,6:3,3:9,2:3,1:2,4:3,2:2,19:3,1:2,9:3,1:A,1:2,7:A,2:4,1:3,1:2,8:3,3:4,2:1,5:0,1:1,31:0",
-          "37:0,1:1,1:2,1:4,3:5,4:3,1:2,1:3,3:2,2:3,1:2,4:3,1:2,2:3,4:9,1:A,18:3,1:2,6:3,1:2,5:3,1:2,4:3,2:A,1:3,6:A,1:4,10:3,2:4,1:3,1:4,2:1,6:0,1:1,12:0,1:1,17:0",
-          "38:0,1:2,5:5,5:3,2:2,1:3,1:2,1:0,1:2,7:3,4:9,2:A,5:3,1:2,29:3,2:A,1:3,6:A,10:3,5:4,2:1,8:0,1:1,28:0",
-          "28:0,1:3,10:0,1:2,1:4,1:5,1:4,2:5,1:3,6:2,1:3,1:2,13:3,1:9,2:A,1:4,7:3,1:2,6:3,1:2,2:3,1:2,1:3,1:2,10:3,2:9,2:3,1:9,6:A,7:3,1:2,1:3,1:4,1:3,1:4,1:3,1:4,8:0,1:1,31:0",
-          "29:0,1:3,10:0,1:4,3:5,1:4,1:5,2:3,3:4,11:3,1:A,2:9,2:3,1:2,3:A,30:3,2:9,1:2,2:3,6:A,1:3,1:2,6:3,1:4,1:3,4:4,40:0",
-          "41:0,2:5,1:4,2:5,1:A,1:9,3:A,1:4,2:3,1:2,5:3,11:A,4:3,1:2,2:3,1:2,2:3,1:2,13:3,1:2,5:3,2:A,1:9,2:3,6:A,8:3,5:4,29:0,1:1,11:0",
-          "42:0,3:4,1:5,2:6,2:4,5:3,1:9,15:A,3:7,13:6,4:7,1:6,1:7,7:6,1:7,2:A,1:7,1:3,1:4,6:A,6:3,3:4,2:3,1:4,42:0",
-          "43:0,3:4,1:3,1:4,2:5,5:3,16:A,2:7,18:6,1:7,7:6,2:7,2:A,1:8,8:A,4:3,2:4,1:3,4:4,43:0",
-          "44:0,7:4,5:3,14:A,2:7,1:8,1:7,7:6,2:7,16:6,1:7,12:A,3:3,2:4,1:3,4:4,44:0",
-          "45:0,8:4,8:3,1:9,8:A,2:7,1:8,2:7,2:6,6:7,16:6,1:7,12:A,1:3,8:4,45:0",
-          "37:0,1:1,9:0,4:5,1:4,2:5,1:4,2:3,3:4,4:3,3:7,3:A,7:7,1:6,6:7,5:6,1:7,9:6,1:7,11:A,1:5,7:4,24:0,1:1,22:0",
-          "49:0,20:A,5:8,3:7,1:6,11:7,8:6,1:7,1:6,1:8,10:A,7:4,16:0,1:1,32:0",
-          "38:0,1:6,7:8,2:7,2:9,1:8,18:A,3:8,2:9,2:7,1:6,12:7,1:6,4:7,1:6,1:7,1:6,2:7,10:A,1:5,1:3,4:4,30:0,1:1,20:0",
-          "34:0,1:2,3:0,2:7,12:0,1:2,6:5,10:A,4:4,1:2,11:3,1:2,7:3,1:2,3:3,1:2,1:4,1:5,6:A,1:6,2:5,4:4,53:0",
-          "31:0,1:3,14:0,1:2,7:0,1:2,10:5,17:3,1:2,15:3,1:5,1:4,1:3,5:A,1:5,4:4,1:1,5:0,1:2,11:0,1:2,36:0",
-          "58:0,2:5,2:4,7:6,25:5,1:3,1:5,5:6,6:A,1:5,1:2,57:0",
-          "59:0,3:1,14:6,14:5,12:6,5:A,3:9,18:0,1:3,37:0",
-          "50:0,1:1,11:0,4:3,34:6,1:3,2:4,4:A,3:9,4:8,2:7,1:6,1:0,2:6,12:0,1:3,33:0",
-          "39:0,1:1,12:0,1:1,1:0,1:3,1:0,1:2,5:0,8:3,3:4,21:6,1:5,7:4,1:3,1:4,8:A,3:9,2:8,1:7,2:6,6:0,1:1,39:0",
-          "22:0,1:2,39:0,5:2,1:0,1:2,1:0,10:2,1:0,8:2,1:0,2:2,2:3,5:2,1:1,4:2,1:0,5:A,2:9,2:8,3:7,49:0",
-          "7:0,1:1,54:0,5:2,2:0,10:2,1:0,1:2,1:0,4:2,1:0,5:2,1:3,2:2,1:1,8:2,2:0,5:A,1:9,3:8,1:7,1:6,49:0",
-          "27:0,1:3,6:0,1:1,28:0,3:2,1:0,5:2,1:0,1:2,1:0,6:2,1:0,2:2,1:0,7:2,1:3,11:2,4:0,2:A,1:9,1:8,2:7,1:6,51:0",
-          "21:0,1:2,40:0,2:2,2:0,12:2,2:0,2:2,1:0,2:2,1:0,6:2,2:3,1:1,6:2,1:3,1:2,1:3,6:0,2:7,4:6,50:0",
-          "58:0,1:3,3:0,2:2,1:0,8:2,1:0,1:2,1:0,10:2,1:0,6:2,2:3,3:2,1:1,1:2,3:3,1:2,9:0,2:6,51:0",
-          "45:0,1:3,6:0,5:6,5:0,1:2,1:0,1:2,1:0,7:2,1:0,1:2,1:0,4:2,1:0,1:2,1:0,2:2,1:0,3:2,1:0,3:2,2:3,7:2,2:3,22:0,1:1,39:0",
-          "50:0,3:6,4:8,4:2,1:0,31:4,1:5,9:4,1:3,1:2,1:0,3:2,1:0,1:2,1:0,1:2,53:0",
-          "36:0,1:3,12:0,1:6,4:8,1:0,2:2,1:0,4:2,6:4,1:2,1:4,1:2,5:4,1:3,1:4,1:3,1:2,2:3,2:4,1:2,2:4,1:2,5:4,2:5,9:4,1:2,1:0,1:2,2:0,3:2,4:1,50:0",
-          "48:0,1:2,1:0,1:2,1:0,1:2,1:0,2:2,1:0,5:2,3:4,1:2,5:4,10:3,18:4,5:5,8:2,1:0,1:2,3:1,1:0,1:1,47:0",
-          "43:0,2:1,2:2,1:0,2:2,1:0,3:2,1:0,2:2,2:0,1:2,1:0,1:2,1:4,1:2,6:4,6:3,1:2,1:3,1:2,3:3,8:4,1:2,3:4,3:5,2:4,5:5,5:2,1:0,1:2,5:1,1:0,4:1,1:0,1:1,43:0",
-          "5:0,1:1,35:0,7:1,3:2,2:0,3:2,4:1,2:2,1:3,3:4,1:2,4:3,1:2,9:3,1:4,2:3,11:4,2:5,1:3,1:4,2:5,1:4,1:3,1:4,1:0,5:2,3:1,1:0,1:1,1:0,1:1,2:0,7:1,13:0,1:3,26:0",
-          "37:0,1:1,2:0,2:1,2:0,1:1,1:0,4:1,11:2,1:0,4:2,1:0,1:2,1:1,1:0,6:1,1:0,6:1,1:2,1:0,2:1,8:2,1:0,11:2,1:0,2:2,4:1,2:0,6:1,1:0,3:1,1:0,2:1,37:0",
-          "35:0,2:1,1:0,3:1,1:0,9:1,2:0,1:1,1:0,3:2,2:0,2:2,1:0,1:2,1:0,2:2,1:0,2:1,1:0,5:1,1:0,1:1,1:0,4:1,1:0,4:1,1:2,1:0,17:2,3:0,2:2,1:0,1:1,1:0,2:1,1:0,9:1,1:0,5:1,12:0,1:3,20:0",
-          "30:0,1:1,3:0,1:1,1:0,1:1,2:0,3:1,1:0,2:1,1:0,6:1,1:0,7:1,1:0,1:1,1:0,3:1,1:0,2:1,1:0,5:1,1:0,1:1,1:0,1:1,1:0,1:1,1:0,2:1,1:0,5:1,2:0,1:1,3:0,1:1,1:0,6:1,1:0,4:1,5:2,4:1,1:0,1:1,1:0,4:1,1:0,3:1,1:0,2:1,1:0,1:1,1:0,1:1,30:0",
-          "27:0,8:1,1:0,1:1,1:0,12:1,2:0,1:1,3:0,2:1,2:0,11:1,2:0,1:1,1:0,1:1,1:0,5:1,3:0,9:1,1:0,12:1,1:0,1:1,1:0,1:2,1:0,1:1,2:2,1:1,1:0,9:1,1:0,4:1,1:0,1:1,1:0,3:1,1:0,1:1,27:0",
-          "23:0,1:1,1:0,3:1,1:0,9:1,1:0,3:1,1:0,1:1,2:0,9:1,2:0,5:1,1:0,1:1,1:0,15:1,1:0,2:1,1:0,3:1,1:0,13:1,3:0,1:1,1:0,4:1,1:0,3:1,1:2,8:1,1:0,2:1,1:0,1:1,1:0,1:1,1:0,12:1,23:0",
-          "20:0,2:1,1:0,2:1,1:0,4:1,2:0,1:1,1:0,3:1,1:0,4:1,1:0,3:1,1:0,2:1,1:0,7:1,1:0,4:1,1:0,9:1,1:0,7:1,1:0,3:1,1:0,3:1,2:0,1:1,1:0,6:1,1:0,14:1,2:0,1:1,1:0,5:1,1:0,16:1,3:0,1:1,1:0,2:1,20:0",
-          "166:0",
-          "166:0",
-          "166:0",
-          "166:0"
-        ];
-
-        function expandPortraitRun(row) {
-          return row.split(",").map((run) => {
-            const [count, value] = run.split(":");
-            return value.repeat(Number.parseInt(count, 10));
-          }).join("");
-        }
-
-        const portraitRows = portraitRuns.map(expandPortraitRun);
-
-        const bootLines = [
-          { kind: "command", text: "whoami" },
+        const boot = [
+          { cmd: "whoami" },
+          { out: ["wenjia wang . trustworthy ai systems . cs education . builder"] },
+          { gap: true },
+          { cmd: "cat me.txt" },
           {
-            kind: "output",
-            lines: [
-              "wenjia wang . cs phd candidate . trustworthy ai . educator"
-            ]
-          },
-          { kind: "spacer" },
-          { kind: "command", text: "cat about.txt" },
-          {
-            kind: "output",
-            lines: [
-              "building verifiable ai for compliance qa and security.",
-              "teaching cs with systems students build and explain.",
+            out: [
+              "i build verifiable ai tools for compliance, security, and learning.",
+              "i teach computer science like systems work: traceable, testable, and useful.",
               "",
-              "i like retrieval, runtime checks, usable tools, and practical software."
+              "not trying to look academic here. trying to look sharp, real, and hireable."
             ]
           },
-          { kind: "spacer" },
-          { kind: "command", text: "ls research/" },
+          { gap: true },
+          { cmd: "ls focus/" },
           {
-            kind: "output",
-            lines: [
-              "<a href=\"publications.html\">ComplianceGPT</a>   . citation-grounded compliance qa <span class=\"live\">[live]</span>",
-              "<a href=\"publications.html\">Zero Trust migration</a> . overlays for legacy infrastructure <span class=\"tag\">[paper]</span>",
-              "<a href=\"publications.html\">Compliance frameworks</a> . cybersecurity governance <span class=\"tag\">[paper]</span>"
-            ],
-            html: true
+            out: [
+              "trustworthy ai      . citation grounded qa . runtime checks",
+              "cybersecurity       . zero trust . compliance frameworks",
+              "cs education        . programming . systems . capstone mentoring"
+            ]
           },
-          { kind: "spacer" },
-          { kind: "command", text: "ls teaching/" },
+          { gap: true },
+          { cmd: "ls pages/" },
           {
-            kind: "output",
-            lines: [
-              "programming . data structures . software engineering",
-              "ai applications . cybersecurity . capstone mentoring",
-              "fiu capstone showcase . judge since fall 2021 <span class=\"live\">[service]</span>"
-            ],
-            html: true
+            html: true,
+            out: [
+              '<a href="research.html">research</a>        . verifiable ai, retrieval, compliance qa',
+              '<a href="teaching.html">teaching</a>        . courses, mentoring, capstone judging',
+              '<a href="publications.html">publications</a>    . papers and project outputs',
+              '<a href="cv.html">cv</a>              . full background'
+            ]
           },
-          { kind: "spacer" },
-          { kind: "command", text: "echo $LINKS" },
+          { gap: true },
+          { cmd: "echo $LINKS" },
           {
-            kind: "output",
-            lines: [
+            html: true,
+            out: [
               `github    <a href="${links.github}">@Wenjia1215</a>`,
               `linkedin  <a href="${links.linkedin}">wenjia wang</a>`,
               `scholar   <a href="${links.scholar}">google scholar</a>`,
               `youtube   <a href="${links.youtube}">WenjiaLectures</a>`,
-              `cv        <a href="${links.cv}">download pdf</a>`,
               `email     <a href="${links.email}">wenjiabusiness@gmail.com</a>`
-            ],
-            html: true
+            ]
           },
-          { kind: "spacer" },
+          { gap: true },
           {
-            kind: "note",
-            lines: [
-              "// llm chat mode coming later. local replies are active now.",
-              "// try typing something"
+            note: [
+              "// type: research, teaching, publications, cv, links, contact, or clear"
             ]
           }
         ];
 
         const replies = {
           help: [
-            "commands: about . research . teaching . experience . skills . links . contact . cv . face . clear",
-            "shortcuts: whoami, cat about.txt, ls research/, ls teaching/, echo $LINKS"
+            "commands: me . research . teaching . publications . cv . links . contact . face . clear",
+            "aliases: whoami, cat me.txt, ls focus/, ls pages/, echo $LINKS"
           ],
-          about: [
-            "wenjia wang is a cs ph.d. candidate focused on trustworthy ai, cybersecurity, and cs education.",
-            "i care about systems that can be verified, explained, taught, and actually used."
+          me: [
+            "wenjia builds trustworthy ai systems and teaches practical computer science.",
+            "positioning: verifiable ai + cybersecurity/compliance + cs education."
           ],
           research: [
-            "focus: verifiable ai for compliance question answering.",
-            "methods: retrieval evidence, citation grounding, answer contracts, runtime verification.",
-            `<a href="publications.html">open publications</a>`
+            "research focus: verifiable ai for compliance question answering.",
+            "methods: retrieval evidence, citation grounding, runtime verification, answer contracts.",
+            '<a href="research.html">open research page</a>'
           ],
           teaching: [
-            "areas: programming, data structures, software engineering, ai applications, cybersecurity.",
-            "academic service: fiu senior capstone mentor and capstone showcase judge from fall 2021 to present."
+            "teaching: programming, data structures, software engineering, ai applications, cybersecurity.",
+            "service: senior capstone mentor and fiu capstone showcase judge since fall 2021.",
+            '<a href="teaching.html">open teaching page</a>'
           ],
-          experience: [
-            "cv additions to highlight: capstone mentor by semester, and fiu capstone showcase judge every spring, summer, and fall since fall 2021.",
-            "positioning: trustworthy ai researcher + practical cs educator + security/compliance builder."
+          publications: [
+            "papers and project outputs live on the publications page.",
+            '<a href="publications.html">open publications page</a>'
           ],
-          skills: [
-            "ai: rag, evidence selection, llm evaluation, grounded qa, ai application design.",
-            "security: compliance frameworks, zero trust, cloud security, policy-aware systems.",
-            "teaching: project-based cs, debugging, system explanation, mentoring."
+          cv: [
+            '<a href="cv.html">open cv page</a>',
+            "next cv pass: emphasize capstone mentor semesters and showcase judging every spring, summer, and fall since fall 2021."
           ],
           links: [
             `github    <a href="${links.github}">@Wenjia1215</a>`,
@@ -656,117 +583,57 @@
             `email     <a href="${links.email}">wenjiabusiness@gmail.com</a>`,
             "location  miami, fl"
           ],
-          cv: [
-            `<a href="${links.cv}">download cv pdf</a>`,
-            "next pass: add academic service entries for capstone mentoring and showcase judging."
-          ],
           face: [
-            "portrait renderer: your attached headshot was converted into embedded ascii texture.",
-            "move your pointer over the right panel to perturb the render."
-          ],
-          chat: [
-            "llm mode is planned, but not wired yet.",
-            "for now this terminal uses fast local replies so the site stays static and free to host."
+            "portrait mode: black-and-white ascii generated from the new photo.",
+            "it keeps the code aesthetic in black and white."
           ],
           hello: [
-            "hi. i am the small local terminal version of wenjia's site.",
-            "try `research`, `teaching`, `links`, or `cv`."
+            "hi. try `research`, `teaching`, `publications`, or `links`."
           ],
           hi: [
-            "hi. i am the small local terminal version of wenjia's site.",
-            "try `research`, `teaching`, `links`, or `cv`."
+            "hi. try `research`, `teaching`, `publications`, or `links`."
           ]
         };
 
         const aliases = {
           "?": "help",
-          "cat about.txt": "about",
-          "cat research.txt": "research",
-          "cat teaching.txt": "teaching",
+          "cat me.txt": "me",
+          "cat about.txt": "me",
+          "whoami": "me",
           "ls": "help",
-          "ls research": "research",
-          "ls research/": "research",
-          "ls teaching": "teaching",
-          "ls teaching/": "teaching",
-          "ls skills": "skills",
-          "ls skills/": "skills",
+          "ls focus": "research",
+          "ls focus/": "research",
+          "ls pages": "links",
+          "ls pages/": "links",
           "echo $links": "links",
           "echo $LINKS": "links",
-          "whoami": "about",
-          "email": "contact",
+          "about": "me",
+          "publication": "publications",
+          "pubs": "publications",
           "resume": "cv",
-          "publications": "research",
-          "linkedin": "links",
+          "email": "contact",
           "github": "links",
+          "linkedin": "links",
           "scholar": "links",
-          "youtube": "links",
-          "llm": "chat"
+          "youtube": "links"
         };
 
-        let portraitFrame = 0;
-        let pointer = { active: false, x: 0.5, y: 0.5 };
-        let mouseX = -1000;
-        let mouseY = -1000;
-        let prevMouseX = -1000;
-        let prevMouseY = -1000;
-        let colorPulse = 0;
-
-        const BOOT_WORD_DELAY = 100;
-        const BOOT_MIN_LINE_DELAY = 720;
-        const BOOT_MAX_LINE_DELAY = 1450;
-        const PORTRAIT_COLS = 166;
-        const PORTRAIT_ROWS = portraitRows.length;
-        const CELL_W = 4.8;
-        const CELL_H = 11;
-        const FONT_SIZE = 8;
-        const RAMP = [
-          " ",
-          "..",
-          ",:;-",
-          "~=+!?",
-          "/\\|<>{}[]",
-          "cvxznrst",
-          "oaepqdbgu",
-          "AXYZSRG094",
-          "OWQB$&#%86",
-          "@#MW$%&B08",
-          "@#$%&WMB8N"
-        ];
-        const OPACITY = [0, 0.2, 0.28, 0.38, 0.5, 0.62, 0.74, 0.84, 0.92, 0.98, 1];
-
-        const rng = (() => {
-          let seed = 1215;
-          return () => {
-            seed = (seed * 1664525 + 1013904223) >>> 0;
-            return seed / 0xFFFFFFFF;
-          };
-        })();
-
-        const portraitLevels = portraitRows.join("").split("").map((value) => {
-          if (value === "A") return 10;
-          return Number.parseInt(value, 10) || 0;
-        });
-        const baseGlyphs = portraitLevels.map((level) => {
-          const charset = RAMP[level] || " ";
-          return charset === " " ? " " : charset[Math.floor(rng() * charset.length)];
-        });
-        const cellNoise = portraitLevels.map(() => rng());
-        const rowNoise = Array.from({ length: PORTRAIT_ROWS }, () => rng());
-        const flickerPhase = portraitLevels.map(() => Math.floor(rng() * 500));
-        const flickerInterval = portraitLevels.map(() => 260 + Math.floor(rng() * 760));
-
-        function clamp(value, min, max) {
-          return Math.max(min, Math.min(max, value));
-        }
+        const terminalLog = document.querySelector("#terminalLog");
+        const terminalScroll = document.querySelector("#terminalScroll");
+        const commandForm = document.querySelector("#commandForm");
+        const commandInput = document.querySelector("#commandInput");
+        const WORD_DELAY = 100;
+        const MIN_LINE_DELAY = 700;
+        const MAX_LINE_DELAY = 1450;
 
         function delay(ms) {
           return new Promise((resolve) => window.setTimeout(resolve, ms));
         }
 
-        function bootLineDelay(line) {
-          const text = line.replace(/<[^>]*>/g, " ").trim();
+        function lineDelay(value) {
+          const text = value.replace(/<[^>]*>/g, " ").trim();
           const words = text ? text.split(/\s+/).length : 1;
-          return clamp(words * BOOT_WORD_DELAY, BOOT_MIN_LINE_DELAY, BOOT_MAX_LINE_DELAY);
+          return Math.max(MIN_LINE_DELAY, Math.min(MAX_LINE_DELAY, words * WORD_DELAY));
         }
 
         function escapeHtml(value) {
@@ -782,98 +649,86 @@
           terminalScroll.scrollTop = terminalScroll.scrollHeight;
         }
 
-        function createBlock() {
-          const block = document.createElement("div");
-          block.className = "block";
-          terminalLog.append(block);
-          return block;
+        function block() {
+          const element = document.createElement("div");
+          element.className = "block";
+          terminalLog.append(element);
+          return element;
         }
 
         async function typeCommand(text) {
-          const block = createBlock();
+          const group = block();
           const line = document.createElement("div");
           const command = document.createElement("span");
-          line.className = "command-line typing-cursor";
-          line.innerHTML = "<span class=\"prompt\">~$</span>";
+          line.className = "cmd typing";
+          line.innerHTML = '<span class="prompt">~$</span>';
           line.append(command);
-          block.append(line);
+          group.append(line);
 
           for (let index = 0; index <= text.length; index += 1) {
             command.textContent = text.slice(0, index);
             scrollToBottom();
-            await delay(index === 0 ? 180 : 52 + Math.random() * 46);
+            await delay(index === 0 ? 180 : 46 + Math.random() * 44);
           }
 
-          line.classList.remove("typing-cursor");
-          await delay(360);
-          return block;
+          line.classList.remove("typing");
+          await delay(320);
+          return group;
         }
 
-        function appendOutput(block, line, html = false) {
-          const output = document.createElement("div");
-          output.className = "output-line";
-          if (line === "") {
-            output.innerHTML = "<span class=\"prefix\">&gt;</span>";
-          } else {
-            output.innerHTML = `<span class="prefix">&gt;</span>${html ? line : escapeHtml(line)}`;
-          }
-          block.append(output);
+        function appendOutput(group, value, html = false) {
+          const line = document.createElement("div");
+          line.className = "out";
+          line.innerHTML = value === ""
+            ? '<span class="prefix">&gt;</span>'
+            : `<span class="prefix">&gt;</span>${html ? value : escapeHtml(value)}`;
+          group.append(line);
         }
 
         function appendNote(lines) {
-          const block = createBlock();
-          for (const line of lines) {
-            const note = document.createElement("div");
-            note.className = "note-line";
-            note.textContent = line;
-            block.append(note);
+          const group = block();
+          for (const value of lines) {
+            const line = document.createElement("div");
+            line.className = "note";
+            line.textContent = value;
+            group.append(line);
           }
         }
 
         async function bootTerminal() {
           commandInput.disabled = true;
 
-          for (const entry of bootLines) {
-            if (entry.kind === "spacer") {
+          for (const item of boot) {
+            if (item.gap) {
               await delay(520);
               continue;
             }
 
-            if (entry.kind === "command") {
-              await typeCommand(entry.text);
+            if (item.cmd) {
+              await typeCommand(item.cmd);
               continue;
             }
 
-            if (entry.kind === "note") {
-              appendNote(entry.lines);
-              await delay(bootLineDelay(entry.lines.join(" ")));
+            if (item.note) {
+              appendNote(item.note);
+              await delay(lineDelay(item.note.join(" ")));
               continue;
             }
 
-            const block = terminalLog.lastElementChild || createBlock();
-            for (const line of entry.lines) {
-              appendOutput(block, line, entry.html);
+            const group = terminalLog.lastElementChild || block();
+            for (const value of item.out) {
+              appendOutput(group, value, item.html);
               scrollToBottom();
-              await delay(bootLineDelay(line));
+              await delay(lineDelay(value));
             }
           }
 
           commandInput.disabled = false;
           commandInput.focus({ preventScroll: true });
-
-          const queuedCommand = new URLSearchParams(window.location.search).get("command");
-          if (queuedCommand) {
-            await delay(520);
-            runCommand(queuedCommand);
-          }
-        }
-
-        function normalizeCommand(raw) {
-          return raw.trim().replace(/\s+/g, " ");
         }
 
         function runCommand(raw) {
-          const command = normalizeCommand(raw);
+          const command = raw.trim().replace(/\s+/g, " ");
           if (!command) return;
 
           if (command.toLowerCase() === "clear") {
@@ -882,173 +737,40 @@
             return;
           }
 
-          const lower = command.toLowerCase();
-          const key = aliases[command] || aliases[lower] || lower;
-          const block = createBlock();
-          const commandLine = document.createElement("div");
-          commandLine.className = "command-line";
-          commandLine.innerHTML = `<span class="prompt">~$</span>${escapeHtml(command)}`;
-          block.append(commandLine);
+          const group = block();
+          const cmd = document.createElement("div");
+          cmd.className = "cmd";
+          cmd.innerHTML = `<span class="prompt">~$</span>${escapeHtml(command)}`;
+          group.append(cmd);
 
+          const key = aliases[command] || aliases[command.toLowerCase()] || command.toLowerCase();
           const output = replies[key] || [
             `command not found: ${escapeHtml(command)}`,
             "try `help` for available commands."
           ];
 
-          for (const line of output) {
-            appendOutput(block, line, true);
+          for (const value of output) {
+            appendOutput(group, value, true);
           }
 
           scrollToBottom();
         }
 
-        function setupTerminalInput() {
-          commandForm.addEventListener("submit", (event) => {
-            event.preventDefault();
-            const command = commandInput.value;
-            commandInput.value = "";
-            runCommand(command);
-          });
+        commandForm.addEventListener("submit", (event) => {
+          event.preventDefault();
+          const command = commandInput.value;
+          commandInput.value = "";
+          runCommand(command);
+        });
 
-          document.addEventListener("keydown", (event) => {
-            if (event.metaKey || event.ctrlKey || event.altKey) return;
-            if (document.activeElement === commandInput) return;
-            if (event.key.length === 1 || event.key === "/") {
-              commandInput.focus();
-            }
-          });
-        }
-
-        function resizePortrait() {
-          const ratio = window.devicePixelRatio || 1;
-          const baseW = PORTRAIT_COLS * CELL_W;
-          const baseH = PORTRAIT_ROWS * CELL_H;
-          const bounds = portraitStage.getBoundingClientRect();
-          const fit = Math.min(1, (bounds.width * 0.78) / baseW, (bounds.height * 0.78) / baseH);
-
-          portraitCanvas.width = Math.ceil(baseW * ratio);
-          portraitCanvas.height = Math.ceil(baseH * ratio);
-          portraitCanvas.style.width = `${Math.round(baseW * fit)}px`;
-          portraitCanvas.style.height = `${Math.round(baseH * fit)}px`;
-          portraitContext.setTransform(ratio, 0, 0, ratio, 0, 0);
-        }
-
-        function portraitColor(level, x, y, alpha, inHover) {
-          const pulse = colorPulse > 0 ? Math.sin((x + y + portraitFrame) * 0.12) * 22 : 0;
-          const hue = (x * 2.15 + y * 4.6 + portraitFrame * 0.28 + level * 18 + pulse + 360) % 360;
-          const saturation = clamp(74 + level * 2.4 + (inHover ? 8 : 0), 76, 98);
-          const lightness = clamp(34 + level * 4.4 + Math.sin((x - y + portraitFrame) * 0.045) * 4 + (inHover ? 7 : 0), 38, 82);
-          return `hsla(${Math.round(hue)}, ${Math.round(saturation)}%, ${Math.round(lightness)}%, ${clamp(alpha, 0, 1)})`;
-        }
-
-        function renderPortrait() {
-          portraitFrame += 1;
-          const baseW = PORTRAIT_COLS * CELL_W;
-          const baseH = PORTRAIT_ROWS * CELL_H;
-          portraitContext.clearRect(0, 0, baseW, baseH);
-          portraitContext.font = `400 ${FONT_SIZE}px "JetBrains Mono", monospace`;
-          portraitContext.textAlign = "center";
-          portraitContext.textBaseline = "middle";
-
-          const mouseMoving = Math.abs(mouseX - prevMouseX) + Math.abs(mouseY - prevMouseY) > 0.5;
-          const rowShift = new Float32Array(PORTRAIT_ROWS);
-          const hoverRadius = 68;
-
-          for (let row = 0; row < PORTRAIT_ROWS; row += 1) {
-            if (!pointer.active || !mouseMoving) continue;
-            const rowCenterY = (row + 0.5) * CELL_H;
-            const dist = Math.abs(rowCenterY - mouseY);
-            if (dist > hoverRadius * 0.72) continue;
-            const strength = (1 - dist / (hoverRadius * 0.72)) * (0.35 + rowNoise[row] * 0.65);
-            rowShift[row] = Math.max(-14, Math.min(14, (mouseX - prevMouseX) * strength * 1.8));
+        document.addEventListener("keydown", (event) => {
+          if (event.metaKey || event.ctrlKey || event.altKey) return;
+          if (document.activeElement === commandInput) return;
+          if (event.key.length === 1 || event.key === "/") {
+            commandInput.focus();
           }
+        });
 
-          for (let i = 0; i < portraitLevels.length; i += 1) {
-            const level = portraitLevels[i];
-            if (level === 0) continue;
-
-            const x = i % PORTRAIT_COLS;
-            const y = Math.floor(i / PORTRAIT_COLS);
-            const px = (x + 0.5) * CELL_W + rowShift[y];
-            const py = (y + 0.5) * CELL_H;
-            const dx = px - mouseX;
-            const dy = py - mouseY;
-            const dist = Math.sqrt(dx * dx + dy * dy);
-            const threshold = hoverRadius * (0.42 + cellNoise[i] * 0.58);
-            const inHover = pointer.active && dist < threshold;
-            const alpha = OPACITY[level];
-            const charset = RAMP[level];
-
-            let glyph = baseGlyphs[i];
-            if (inHover && mouseMoving && rng() < 0.05) {
-              const roughLevel = Math.max(1, Math.min(10, level + Math.floor((rng() - 0.5) * 4)));
-              const roughSet = RAMP[roughLevel];
-              glyph = roughSet[Math.floor(rng() * roughSet.length)];
-              baseGlyphs[i] = glyph;
-            } else if ((portraitFrame + flickerPhase[i]) % flickerInterval[i] === 0) {
-              glyph = charset[Math.floor(rng() * charset.length)];
-              baseGlyphs[i] = glyph;
-            }
-
-            const featureBoost = level >= 9 ? 1 : 0.9;
-            const hoverBoost = inHover || colorPulse > 0 ? 1.16 : 1;
-            portraitContext.fillStyle = portraitColor(level, x, y, alpha * featureBoost * hoverBoost, inHover);
-
-            let jitterY = 0;
-            if (inHover && mouseMoving && rng() < 0.16) {
-              jitterY = (rng() < 0.5 ? -1 : 1) * (1 + Math.floor(cellNoise[i] * 6));
-            }
-
-            portraitContext.fillText(glyph, px, py + jitterY);
-
-            if (inHover && mouseMoving) {
-              const push = 5 * (1 - dist / threshold);
-              const ghostX = Math.max(-16, Math.min(16, (mouseX - prevMouseX) * push * 0.45));
-              const ghostY = Math.max(-16, Math.min(16, (mouseY - prevMouseY) * push * 0.45));
-              portraitContext.fillText(glyph, px + ghostX, py + jitterY + ghostY);
-            }
-          }
-
-          if (colorPulse > 0) colorPulse -= 1;
-          prevMouseX = mouseX;
-          prevMouseY = mouseY;
-          window.requestAnimationFrame(renderPortrait);
-        }
-
-        function setupPortrait() {
-          resizePortrait();
-          renderPortrait();
-
-          portraitCanvas.addEventListener("pointermove", (event) => {
-            const bounds = portraitCanvas.getBoundingClientRect();
-            const baseW = PORTRAIT_COLS * CELL_W;
-            const baseH = PORTRAIT_ROWS * CELL_H;
-            mouseX = (event.clientX - bounds.left) * (baseW / bounds.width);
-            mouseY = (event.clientY - bounds.top) * (baseH / bounds.height);
-            pointer = {
-              active: true,
-              x: mouseX / baseW,
-              y: mouseY / baseH
-            };
-          });
-
-          portraitCanvas.addEventListener("pointerleave", () => {
-            pointer.active = false;
-            mouseX = -1000;
-            mouseY = -1000;
-            prevMouseX = -1000;
-            prevMouseY = -1000;
-          });
-
-          portraitCanvas.addEventListener("click", () => {
-            colorPulse = 180;
-          });
-
-          window.addEventListener("resize", resizePortrait);
-        }
-
-        setupTerminalInput();
-        setupPortrait();
         bootTerminal();
       })();
     </script>
