@@ -9,20 +9,40 @@ permissions:
 
 jobs:
   patch:
-    if: github.event.pull_request.head.repo.full_name == github.repository
+    if: github.event.pull_request.head.repo.full_name == github.repository && github.actor != 'github-actions[bot]'
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
-        with:
-          ref: ${{ github.event.pull_request.head.ref }}
-          fetch-depth: 0
-      - name: Patch index content
+      - name: Patch requested site content
         shell: python
+        env:
+          GH_TOKEN: ${{ github.token }}
+          REPOSITORY: ${{ github.repository }}
+          BRANCH: ${{ github.event.pull_request.head.ref }}
         run: |
-          from pathlib import Path
+          import base64
+          import json
+          import os
+          import urllib.request
 
-          path = Path("index.html")
-          text = path.read_text(encoding="utf-8")
+          token = os.environ["GH_TOKEN"]
+          repo = os.environ["REPOSITORY"]
+          branch = os.environ["BRANCH"]
+          headers = {
+              "Accept": "application/vnd.github+json",
+              "Authorization": f"Bearer {token}",
+              "X-GitHub-Api-Version": "2022-11-28",
+              "User-Agent": "one-shot-site-patch",
+          }
+
+          def request_json(url, method="GET", payload=None):
+              body = None if payload is None else json.dumps(payload).encode("utf-8")
+              req = urllib.request.Request(url, data=body, headers=headers, method=method)
+              with urllib.request.urlopen(req) as response:
+                  return json.load(response)
+
+          index_url = f"https://api.github.com/repos/{repo}/contents/index.html?ref={branch}"
+          index = request_json(index_url)
+          text = base64.b64decode(index["content"]).decode("utf-8")
 
           replacements = [
               (
@@ -125,15 +145,27 @@ jobs:
                   raise SystemExit(f"Expected exactly one match, found {count}: {old[:80]!r}")
               text = text.replace(old, new, 1)
 
-          marker = Path(".site-patch-trigger")
-          if marker.exists():
-              marker.unlink()
-          path.write_text(text, encoding="utf-8")
-      - name: Commit patch
-        run: |
-          git config user.name "Wenjia site patch"
-          git config user.email "actions@users.noreply.github.com"
-          git add -A
-          git diff --cached --check
-          git commit -m "Update profile dates and teaching content"
-          git push origin HEAD:${{ github.event.pull_request.head.ref }}
+          update_url = f"https://api.github.com/repos/{repo}/contents/index.html"
+          request_json(
+              update_url,
+              method="PUT",
+              payload={
+                  "message": "Update profile dates and teaching content",
+                  "content": base64.b64encode(text.encode("utf-8")).decode("ascii"),
+                  "sha": index["sha"],
+                  "branch": branch,
+              },
+          )
+
+          marker_url = f"https://api.github.com/repos/{repo}/contents/.site-patch-trigger?ref={branch}"
+          marker = request_json(marker_url)
+          delete_url = f"https://api.github.com/repos/{repo}/contents/.site-patch-trigger"
+          request_json(
+              delete_url,
+              method="DELETE",
+              payload={
+                  "message": "Remove temporary patch trigger",
+                  "sha": marker["sha"],
+                  "branch": branch,
+              },
+          )
