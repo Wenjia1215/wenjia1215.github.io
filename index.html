@@ -295,9 +295,9 @@
       .portrait-frame {
         position: relative;
         z-index: 1;
-        width: min(76%, 640px);
+        width: min(76%, 640px, 57.6vh);
         display: grid;
-        gap: 16px;
+        gap: 12px;
       }
 
       .ascii-face {
@@ -306,9 +306,9 @@
 
       .portrait-visual {
         position: relative;
+        width: 100%;
         min-height: 0;
         aspect-ratio: 4 / 5;
-        max-height: 72vh;
         overflow: hidden;
         border: 1px solid rgba(255, 255, 255, 0.2);
         background: #050505;
@@ -397,20 +397,20 @@
         width: 100%;
         display: grid;
         grid-template-columns: repeat(4, minmax(0, 1fr));
-        gap: 8px;
+        gap: 6px;
       }
 
       .action {
         min-width: 0;
-        min-height: 42px;
+        min-height: 36px;
         display: grid;
         place-items: center;
-        padding: 9px 8px;
+        padding: 7px 6px;
         border: 1px solid rgba(255, 255, 255, 0.18);
         background: rgba(8, 8, 8, 0.76);
         color: var(--text);
         text-decoration: none;
-        font-size: clamp(10px, 0.72vw, 13px);
+        font-size: clamp(9px, 0.66vw, 12px);
         font-weight: 800;
         cursor: pointer;
         backdrop-filter: blur(12px);
