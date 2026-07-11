@@ -1,20 +1,20 @@
-# Trigger requested content patch after workflow registration.
 name: One-shot site content patch
 
 on:
-  push:
-    paths:
-      - .github/workflows/one-shot-site-patch.yml
+  pull_request:
+    types: [opened, synchronize, reopened]
 
 permissions:
   contents: write
 
 jobs:
   patch:
+    if: github.event.pull_request.head.repo.full_name == github.repository
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
         with:
+          ref: ${{ github.event.pull_request.head.ref }}
           fetch-depth: 0
       - name: Patch index content
         shell: python
@@ -125,12 +125,15 @@ jobs:
                   raise SystemExit(f"Expected exactly one match, found {count}: {old[:80]!r}")
               text = text.replace(old, new, 1)
 
+          marker = Path(".site-patch-trigger")
+          if marker.exists():
+              marker.unlink()
           path.write_text(text, encoding="utf-8")
       - name: Commit patch
         run: |
           git config user.name "Wenjia site patch"
           git config user.email "actions@users.noreply.github.com"
-          git add index.html
+          git add -A
           git diff --cached --check
           git commit -m "Update profile dates and teaching content"
-          git push
+          git push origin HEAD:${{ github.event.pull_request.head.ref }}
