@@ -367,7 +367,7 @@
         bottom: 16px;
         left: 18px;
         display: flex;
-        justify-content: space-between;
+        justify-content: flex-end;
         gap: 18px;
         color: rgba(255, 255, 255, 0.66);
         font-size: clamp(9px, 0.62vw, 11px);
@@ -376,18 +376,8 @@
         text-transform: uppercase;
       }
 
-      .signal-name {
+      .signal-date {
         color: rgba(255, 255, 255, 0.9);
-      }
-
-      .signal-name::before {
-        content: "";
-        display: inline-block;
-        width: 18px;
-        height: 1px;
-        margin: 0 9px 0 0;
-        vertical-align: middle;
-        background: var(--accent);
       }
 
       .portrait-actions {
@@ -912,8 +902,7 @@
               decoding="async"
             >
             <div class="signal-meta" aria-hidden="true">
-              <span class="signal-name">wenjia wang</span>
-              <span>signal // 1215</span>
+              <span class="signal-date">20211004</span>
             </div>
           </div>
 
@@ -1122,7 +1111,7 @@
           github: "https://github.com/Wenjia1215",
           linkedin: "https://www.linkedin.com/in/wenjiawang-page/",
           scholar: "https://scholar.google.com/citations?user=Zl-yM-kAAAAJ&hl=en&oi=ao",
-          youtube: "https://www.youtube.com/@ComplianceGPT",
+          youtube: "https://www.youtube.com/@WenjiaLectures",
           cv: "assets/files/wenjia-wang-cv.pdf",
           email: "mailto:wenjiabusiness@gmail.com"
         };
@@ -1164,7 +1153,7 @@
             out: [
               `<span class="key">github</span><a href="${links.github}">@wenjia1215</a>`,
               `<span class="key">linkedin</span><a href="${links.linkedin}">wenjia wang</a>`,
-              `<span class="key">youtube</span><a href="${links.youtube}">@ComplianceGPT</a>`,
+              `<span class="key">youtube</span><a href="${links.youtube}">@WenjiaLectures</a>`,
               `<span class="key">scholar</span><a href="${links.scholar}">google scholar</a>`,
               `<span class="key">email</span><a href="${links.email}">wenjiabusiness@gmail.com</a>`
             ]
@@ -1219,7 +1208,7 @@
           links: [
             `<span class="key">github</span><a href="${links.github}">@wenjia1215</a>`,
             `<span class="key">linkedin</span><a href="${links.linkedin}">wenjia wang</a>`,
-            `<span class="key">youtube</span><a href="${links.youtube}">@ComplianceGPT</a>`,
+            `<span class="key">youtube</span><a href="${links.youtube}">@WenjiaLectures</a>`,
             `<span class="key">scholar</span><a href="${links.scholar}">google scholar</a>`,
             `<span class="key">email</span><a href="${links.email}">wenjiabusiness@gmail.com</a>`
           ],
@@ -1228,7 +1217,7 @@
             "say hello. thoughtful collaborations, teaching, and secure ai work are welcome."
           ],
           face: [
-            "portrait mode: high-contrast signal scan built from the original photo.",
+            "portrait mode: high-contrast scan built from the original photo.",
             "hover the image to sharpen the feed."
           ],
           hello: [
