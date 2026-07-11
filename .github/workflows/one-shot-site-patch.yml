@@ -1,0 +1,135 @@
+name: One-shot site content patch
+
+on:
+  push:
+    paths:
+      - .github/workflows/one-shot-site-patch.yml
+
+permissions:
+  contents: write
+
+jobs:
+  patch:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Patch index content
+        shell: python
+        run: |
+          from pathlib import Path
+
+          path = Path("index.html")
+          text = path.read_text(encoding="utf-8")
+
+          replacements = [
+              (
+                  '          { out: ["wenjia wang . geeker . teacher . adventurer"] },',
+                  '          { out: ["wenjia wang . builder . teacher . researcher"] },',
+              ),
+              (
+                  '''            <div class="signal-meta" aria-hidden="true">
+              <span class="signal-date">20211004</span>
+            </div>''',
+                  '''            <div class="signal-meta" aria-hidden="true">
+              <span class="signal-date">19930209</span>
+              <span class="signal-date">20120817</span>
+              <span class="signal-date">20191215</span>
+              <span class="signal-date">20211004</span>
+            </div>''',
+              ),
+              (
+                  '''          <div class="modal-body">
+            <div class="modal-intro">
+              <span class="section-label">teaching practice</span>
+              <p>My classroom and mentoring work spans security, software vulnerabilities, capstone engineering, architecture review, technical presentations, and interdisciplinary software projects.</p>
+            </div>
+            <div class="detail-grid">
+              <article class="detail-card">
+                <span class="detail-number">01 / COURSES</span>
+                <h3>Security in Computing</h3>
+                <p>Teaching assistant for CEN 5013 and CEN 5079, Software Vulnerabilities and Security, at Florida International University.</p>
+              </article>
+              <article class="detail-card">
+                <span class="detail-number">02 / CAPSTONE</span>
+                <h3>From requirements to demo</h3>
+                <p>Mentors teams through architecture, implementation, testing, documentation, technical presentations, and final demonstrations.</p>
+              </article>
+              <article class="detail-card">
+                <span class="detail-number">03 / EVALUATION</span>
+                <h3>Showcase judge since 2023</h3>
+                <p>Evaluates interdisciplinary capstone projects for system design, technical execution, communication, and real-world usefulness.</p>
+              </article>
+            </div>
+            <div class="modal-cta-row">
+              <span class="modal-cta">guided work: peer-to-peer file sharing</span>
+              <span class="modal-cta">guided work: Baby-Feed health platform</span>
+            </div>
+          </div>''',
+                  '''          <div class="modal-body">
+            <div class="modal-intro">
+              <span class="section-label">courses i can teach</span>
+              <p>Courses I am prepared to teach across applied AI, cybersecurity, and software systems.</p>
+            </div>
+            <div class="detail-grid">
+              <article class="detail-card">
+                <span class="detail-number">01 / AI &amp; APPLIED AI</span>
+                <h3>Artificial Intelligence</h3>
+                <p>Introduction to Artificial Intelligence, Applied Generative AI / LLM Systems, and Machine Learning Applications.</p>
+              </article>
+              <article class="detail-card">
+                <span class="detail-number">02 / CYBERSECURITY</span>
+                <h3>Cybersecurity</h3>
+                <p>Security in Computing, Software Vulnerabilities and Security, and Cybersecurity Compliance and Governance.</p>
+              </article>
+              <article class="detail-card">
+                <span class="detail-number">03 / SOFTWARE SYSTEMS</span>
+                <h3>Software Systems</h3>
+                <p>Software Engineering, Web Application Development, Database Systems, Data Structures, and Programming I / II.</p>
+              </article>
+            </div>
+            <div class="modal-intro" style="margin-top: clamp(38px, 6vw, 68px);">
+              <span class="section-label">teaching in practice</span>
+              <p>My classroom and mentoring work spans security, software vulnerabilities, capstone engineering, architecture review, technical presentations, and interdisciplinary software projects.</p>
+            </div>
+            <div class="detail-grid">
+              <article class="detail-card">
+                <span class="detail-number">01 / CLASSROOM</span>
+                <h3>Security in Computing</h3>
+                <p>Teaching assistant for CEN 5013 and CEN 5079, Software Vulnerabilities and Security, at Florida International University.</p>
+              </article>
+              <article class="detail-card">
+                <span class="detail-number">02 / CAPSTONE</span>
+                <h3>From requirements to demo</h3>
+                <p>Mentors teams through architecture, implementation, testing, documentation, technical presentations, and final demonstrations.</p>
+              </article>
+              <article class="detail-card">
+                <span class="detail-number">03 / EVALUATION</span>
+                <h3>Showcase judge since 2023</h3>
+                <p>Evaluates interdisciplinary capstone projects for system design, technical execution, communication, and real-world usefulness.</p>
+              </article>
+            </div>
+            <div class="modal-cta-row">
+              <span class="modal-cta">guided work: peer-to-peer file sharing</span>
+              <span class="modal-cta">guided work: Baby-Feed health platform</span>
+            </div>
+          </div>''',
+              ),
+          ]
+
+          for old, new in replacements:
+              count = text.count(old)
+              if count != 1:
+                  raise SystemExit(f"Expected exactly one match, found {count}: {old[:80]!r}")
+              text = text.replace(old, new, 1)
+
+          path.write_text(text, encoding="utf-8")
+      - name: Commit patch
+        run: |
+          git config user.name "Wenjia site patch"
+          git config user.email "actions@users.noreply.github.com"
+          git add index.html
+          git diff --cached --check
+          git commit -m "Update profile dates and teaching content"
+          git push
