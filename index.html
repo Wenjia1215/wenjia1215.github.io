@@ -8,12 +8,17 @@
       content="Wenjia Wang builds and teaches secure, verifiable AI systems—and explores life beyond the screen."
     >
     <meta name="theme-color" content="#080808">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link rel="icon" type="image/svg+xml" href="assets/icons/favicon.svg">
     <link rel="shortcut icon" href="assets/icons/favicon.svg">
+    <link rel="preload" as="image" href="assets/img/headicon.webp" type="image/webp">
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700;800&display=swap"
+    >
     <title>Wenjia Wang | Secure AI Builder + Teacher</title>
     <style>
-      @import url("https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700;800&display=swap");
-
       :root {
         color-scheme: dark;
         --bg: #080808;
@@ -69,12 +74,11 @@
         display: grid;
         grid-template-columns: minmax(0, 47vw) minmax(0, 53vw);
         min-height: 100vh;
-        transition: filter 240ms ease, transform 240ms ease;
+        transition: opacity 140ms ease;
       }
 
       .modal-open .page {
-        filter: blur(5px) brightness(0.48);
-        transform: scale(0.992);
+        opacity: 0.42;
       }
 
       .terminal {
@@ -300,10 +304,6 @@
         gap: 12px;
       }
 
-      .ascii-face {
-        display: none;
-      }
-
       .portrait-visual {
         position: relative;
         width: 100%;
@@ -410,7 +410,6 @@
         font-size: clamp(9px, 0.66vw, 12px);
         font-weight: 800;
         cursor: pointer;
-        backdrop-filter: blur(12px);
         transition: color 160ms ease, border-color 160ms ease, background 160ms ease, transform 160ms ease;
       }
 
@@ -429,7 +428,6 @@
         place-items: center;
         padding: clamp(14px, 4vw, 48px);
         background: rgba(0, 0, 0, 0.72);
-        backdrop-filter: blur(14px);
         opacity: 1;
         visibility: visible;
         transition: opacity 140ms ease, visibility 0s linear 0s;
@@ -455,6 +453,8 @@
         box-shadow: 0 44px 120px rgba(0, 0, 0, 0.72);
         transform: translateY(0) scale(1);
         transition: transform 180ms cubic-bezier(0.2, 0.75, 0.2, 1);
+        will-change: transform;
+        contain: layout paint;
         scrollbar-color: #343434 #0a0a0a;
         scrollbar-width: thin;
       }
@@ -475,7 +475,6 @@
         padding: 10px 14px 10px 20px;
         border-bottom: 1px solid rgba(255, 255, 255, 0.13);
         background: rgba(8, 8, 8, 0.92);
-        backdrop-filter: blur(18px);
         color: var(--soft);
         font-size: 11px;
         font-weight: 700;
@@ -528,7 +527,7 @@
       .teaching-view .modal-hero {
         background-image:
           linear-gradient(90deg, rgba(0, 0, 0, 0.93) 0%, rgba(0, 0, 0, 0.73) 46%, rgba(0, 0, 0, 0.38) 100%),
-          url("assets/img/teaching-bg.png");
+          url("assets/img/teaching-bg.webp");
         background-position: center, center;
         background-size: cover, cover;
       }
@@ -909,67 +908,14 @@
               class="portrait-photo"
               src="assets/img/headicon.webp"
               alt="Cybernetic portrait of Wenjia Wang with a glowing red robotic eye"
+              fetchpriority="high"
+              decoding="async"
             >
             <div class="signal-meta" aria-hidden="true">
               <span class="signal-name">wenjia wang</span>
               <span>signal // 1215</span>
             </div>
           </div>
-
-          <pre class="ascii-face" aria-hidden="true" hidden>                                                     ,t,                 .`.
-                                                                         ..
-                                                         .. .
-                                                        ...`````.
-                                .``,,;;;;;;`.           .`,:iii:,.       . ..
- .                            `;;:,. .;;1ii;:, .        .,;fG0Gt:.       ....
-          .                  ,ti11ti: ,,,:;::``,:       `,f@@@@0:,:.     ....
-     .   .`                 ;1;:,.:;,.      ..  .,,.    `:t8@@@L,iCi     ....
-                           i1;:`.                  `i   .,;tLLt:.iGi     ..
-                         .tf;,.    ```,::,.         i;  ..`,:,`. :t:     .
-                        .tt1,`  ,ifCCCCLLft1:`      .i.   ....   `;.
-                        tL;..`:fCG00GGGCLfLfti,`     ,`   ...`;:`,:.     ..
-                       .ti  .iCGG00800GCLfff1:,,,    `,  ... `;:..`        ...
-.                      `1   iG0GG00000GCLftt;,``,,   ,:  .               .;t;.
-.,1t:`.                i;`,:L80GGG000GCCft1i:,``,:,  `ii,              .,itf:
-`G@@@8;                iti`:C80GG0000GCCftft1;,``;;   1@8`            .`,;tLLi
-`L@@@@1                ,1,`:L080G000GCLCfLLti;:,,i;   ,Gt,`             .;t0@@
-.`;LGt,`                ,,::C08Cti:;11tf11:.    `1t. ... ..       ...,. ;G080G
- ...,,:`        `11,    ,;,;08GtLC1:,,tf:.  :i:  tL`   ...        .t0@f t@@@80
-``. `;i,        C@@@:   ::.i88CCL1;::iCC;. `:,`..:L;    .         :@@@G`L@@@@C
-:t1  `:,        i8@0,   :1:t@8Gfft,`;L881 ,1i:.  .t1 .. .        `i@@@C`L@@@@L
-1@8:.`;;    .    `:,.. `C;;L@888Gf1if8881.i1i;,`..if`.` ``::.    1LG80L;L@@@@C
-:ii,::1t,i;```  ,,  .`..1itC@8800CLG88881.,1111i;`iL`,tCG;ii`   .tGL:1@0C@@@@C
-;`.`;iff;Lf,`.  `` .`i; .1LG8800GG000880;  ;1tf1:.it`C@@@f:;`   .iti``ttL8@@8L
-i,..:;tt.`,,`     .,:fL1`iG80GGGG0GCC080i  ,tt1;`.:i:G8GLi:::`..,,. . .:f8@@8L
-11, `,11. .:,.     .`1t:.,G80GCCGGLtt08G1`  ii;`..;;:;:;i:.:;,`,;,  ...,t08@0f
-ii, .`;;   ..        :,  :LtGCLLCCftGt11,   ,;`...;:,,:i1: :i:`,:,  .. `10880f
-`.  ....           ..,, .`i1CCfGGCCG0Gf:    .:..`.::`..,;,.:i1:...  .. .1088Gf
-    ..            .,:::,` `;fCL00GGLCGCfi    ..`,`:;`,`,;,.:;i,        .iC0Gft
-  .  ` ..   .....  `,`,,,,:;fLC00Gf,:i;:`    ..`,,,i;:..,. `,`.        .1CCt,,
-.`.  ,:::;::::;;:,,,,,::;ii1ffL0GCttCCfi,.   ..`,``:,,,``  ..`,..      .1CCt,
-,,.  `,,,:,,,::;;i111iiii;;;1ftCCLLCGC1:,. .  .`,.::,,::,`.```,,:,  `:::tCCf:
-;:,,``,,,,,,,,:;;i111i;;:::::;1GfLCCCCCf1;`. ```,,::::::;1tt11tff1.`tCCG000Gt:
-;::;;;;;;;;;;;;iiii;;;;:::;;;i;0LiLGGCLti;`..`.., `i1111i1fLCLLCC1..fGGG0000GC
-:;;;;iii111iiiiiiiiiiii;;;;;Li.00Ciit1:,`.  .  .,. `ittft1itLCCCf:  :LCCCCCCCG
-111ttfLLLffttttttttttttt11ifC ,0GGC1:,`     .  .`    `1ttti;1fLLfi,,:1ffffffft
-ttffLLLLLfftttttttttt111tG1Ci :0GGGGf;,,`.  .  .    `  ,itt1i1ffffft111ttftttt
-ttffffffttt11111tt111111ff;L, :GGGGGGL;`.   ...     .`   :1ttttffffffttfffffff
-fffffLLLLLLLLLLLLLLf1i::t1i1` `CGGCCCGL;... ...      .     `;tffffffffttfttttt
-LLLCCCCCCCCCCCCCLt1i,`.,t1i;.  fGCCCCCLf;.. .                 `;tLCGGGLtt11111
-CCCCCCCCCCCCLLLt;i:...`:1i;;    tCLLLf1i,.                       `;fC00Gft1111
-CCCCGGGGCCLfft:,i,.....:1;;i     ;fLLf1i:,`.                        ,1LGGGCt11
-GGGGGGGCCGGGt:`:. ``..`,i:i;       ;tf1i;;11                          .1G88GLt
-GGGGGGGGGCC:,`,..``,:```:i11          .`,,`         .                   1GG0GC
-GGGGGGGL1;;,,`. .ti`.,,,,;;;                        `.        .  `      ,fLC00
-GGGGG0L1;i;:,` ``i:`,,,:;;``                        i.           `,      ;LLC0
-GGGG0G1;:;:::` `,`   ..``..`                       .i.            i`,`   .tffL
-GGCCCf:,,`.::  ;i: .:....                          ,:.           `;::,    iLft
-1111t1``.  :. `;;  `;`,:,.. `                      ;. .          .,`      ,fff
-1111t;.`...:  ,:  .,;,,,``  `                     .;  .           ,`       1Lf
-CCCGt,. .  `  ,.  ,::,,,`:. `.                    ,:  .           `.       ;ff
-CCGG;``      .,  `,,```,:,  ..                    ;.  .           ..       `ff
-CCGL,...     `  .:i:..,:;`  ..                    ;               .         tf
-CCCt`. .     `  .:Gt`:,::.  ...                  `:   ..     `.             1L</pre>
 
           <nav class="portrait-actions" aria-label="Primary pages">
             <button class="action" type="button" data-modal="research">research</button>
@@ -1325,9 +1271,9 @@ CCCt`. .     `  .:Gt`:,::.  ...                  `:   ..     `.             1L</
         };
         let lastModalTrigger = null;
         const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-        const WORD_DELAY = 34;
-        const MIN_LINE_DELAY = 180;
-        const MAX_LINE_DELAY = 460;
+        const WORD_DELAY = 14;
+        const MIN_LINE_DELAY = 70;
+        const MAX_LINE_DELAY = 180;
 
         function delay(ms) {
           return new Promise((resolve) => window.setTimeout(resolve, reduceMotion ? 0 : ms));
@@ -1421,11 +1367,11 @@ CCCt`. .     `  .:Gt`:,::.  ...                  `:   ..     `.             1L</
           for (let index = 0; index <= text.length; index += 1) {
             command.textContent = text.slice(0, index);
             scrollToBottom();
-            await delay(index === 0 ? 100 : 20 + Math.random() * 28);
+            await delay(index === 0 ? 45 : 8 + Math.random() * 12);
           }
 
           line.classList.remove("typing");
-          await delay(160);
+          await delay(70);
           return group;
         }
 
@@ -1453,7 +1399,7 @@ CCCt`. .     `  .:Gt`:,::.  ...                  `:   ..     `.             1L</
 
           for (const item of boot) {
             if (item.gap) {
-              await delay(150);
+              await delay(60);
               continue;
             }
 
@@ -1550,6 +1496,17 @@ CCCt`. .     `  .:Gt`:,::.  ...                  `:   ..     `.             1L</
             commandInput.focus();
           }
         });
+
+        function warmTeachingBackground() {
+          const image = new Image();
+          image.src = "assets/img/teaching-bg.webp";
+        }
+
+        if ("requestIdleCallback" in window) {
+          window.requestIdleCallback(warmTeachingBackground, { timeout: 1800 });
+        } else {
+          window.setTimeout(warmTeachingBackground, 900);
+        }
 
         bootTerminal();
       })();
