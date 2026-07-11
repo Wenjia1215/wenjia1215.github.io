@@ -1,3 +1,4 @@
+# Trigger requested content patch after workflow registration.
 name: One-shot site content patch
 
 on:
