@@ -363,23 +363,42 @@
       .signal-meta {
         position: absolute;
         z-index: 4;
-        right: 18px;
-        bottom: 16px;
-        left: 18px;
+        top: 16px;
+        right: 16px;
         display: grid;
-        grid-template-columns: repeat(4, minmax(0, 1fr));
-        align-items: center;
-        gap: 0;
+        justify-items: end;
+        gap: 6px;
         color: rgba(255, 255, 255, 0.66);
         font-size: clamp(9px, 0.62vw, 11px);
         font-weight: 700;
         letter-spacing: 0.1em;
         text-transform: uppercase;
+        text-shadow: 0 1px 8px rgba(0, 0, 0, 0.95);
+      }
+
+      .signal-label {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        margin-bottom: 2px;
+        color: var(--accent);
+        font-size: 0.9em;
+        font-weight: 800;
+        letter-spacing: 0.18em;
+      }
+
+      .signal-label::before {
+        content: "";
+        width: 5px;
+        height: 5px;
+        border-radius: 50%;
+        background: var(--accent);
+        box-shadow: 0 0 8px rgba(216, 106, 43, 0.75);
       }
 
       .signal-date {
         color: rgba(255, 255, 255, 0.9);
-        text-align: center;
+        text-align: right;
       }
 
       .portrait-actions {
@@ -814,9 +833,11 @@
         }
 
         .signal-meta {
+          top: 12px;
           right: 12px;
-          bottom: 12px;
-          left: 12px;
+          bottom: auto;
+          left: auto;
+          gap: 5px;
         }
 
         .modal-layer {
@@ -904,6 +925,7 @@
               decoding="async"
             >
             <div class="signal-meta" aria-hidden="true">
+              <span class="signal-label">SIGNAL</span>
               <span class="signal-date">19930209</span>
               <span class="signal-date">20120817</span>
               <span class="signal-date">20191215</span>
@@ -1139,7 +1161,7 @@
           scholar: "https://scholar.google.com/citations?user=Zl-yM-kAAAAJ&hl=en&oi=ao",
           youtube: "https://www.youtube.com/@WenjiaLectures",
           cv: "assets/files/wenjia-wang-cv.pdf",
-          email: "mailto:wenjiabusiness@gmail.com"
+          email: "https://mail.google.com/mail/?view=cm&fs=1&to=wenjiabusiness@gmail.com"
         };
 
         const boot = [
