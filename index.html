@@ -366,9 +366,10 @@
         right: 18px;
         bottom: 16px;
         left: 18px;
-        display: flex;
-        justify-content: flex-end;
-        gap: 18px;
+        display: grid;
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+        align-items: center;
+        gap: 0;
         color: rgba(255, 255, 255, 0.66);
         font-size: clamp(9px, 0.62vw, 11px);
         font-weight: 700;
@@ -378,6 +379,7 @@
 
       .signal-date {
         color: rgba(255, 255, 255, 0.9);
+        text-align: center;
       }
 
       .portrait-actions {
