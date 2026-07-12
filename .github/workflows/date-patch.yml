@@ -1,0 +1,76 @@
+name: One-shot portrait date spacing patch
+
+on:
+  push:
+    paths:
+      - .github/workflows/date-patch.yml
+
+permissions:
+  contents: write
+
+jobs:
+  patch:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+      - name: Evenly space portrait dates
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+
+          path = Path("index.html")
+          text = path.read_text(encoding="utf-8")
+          old = '''      .signal-meta {
+        position: absolute;
+        z-index: 4;
+        right: 18px;
+        bottom: 16px;
+        left: 18px;
+        display: flex;
+        justify-content: flex-end;
+        gap: 18px;
+        color: rgba(255, 255, 255, 0.66);
+        font-size: clamp(9px, 0.62vw, 11px);
+        font-weight: 700;
+        letter-spacing: 0.1em;
+        text-transform: uppercase;
+      }
+
+      .signal-date {
+        color: rgba(255, 255, 255, 0.9);
+      }'''
+          new = '''      .signal-meta {
+        position: absolute;
+        z-index: 4;
+        right: 18px;
+        bottom: 16px;
+        left: 18px;
+        display: grid;
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+        align-items: center;
+        gap: 0;
+        color: rgba(255, 255, 255, 0.66);
+        font-size: clamp(9px, 0.62vw, 11px);
+        font-weight: 700;
+        letter-spacing: 0.1em;
+        text-transform: uppercase;
+      }
+
+      .signal-date {
+        color: rgba(255, 255, 255, 0.9);
+        text-align: center;
+      }'''
+          count = text.count(old)
+          if count != 1:
+              raise SystemExit(f"Expected exactly one signal-meta CSS block, found {count}")
+          path.write_text(text.replace(old, new, 1), encoding="utf-8")
+          PY
+          rm .github/workflows/date-patch.yml
+          git config user.name "Wenjia site patch"
+          git config user.email "actions@users.noreply.github.com"
+          git add index.html .github/workflows/date-patch.yml
+          git diff --cached --check
+          git commit -m "Evenly space portrait dates"
+          git push
