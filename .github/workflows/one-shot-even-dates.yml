@@ -1,27 +1,49 @@
 name: One-shot evenly space portrait dates
 
 on:
-  push:
-    paths:
-      - .github/workflows/one-shot-even-dates.yml
+  pull_request:
+    types: [opened, synchronize, reopened]
 
 permissions:
   contents: write
 
 jobs:
   patch:
+    if: github.event.pull_request.head.repo.full_name == github.repository && github.actor != 'github-actions[bot]'
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
-        with:
-          ref: main
-      - name: Evenly space portrait dates
+      - name: Patch portrait date spacing on head branch
+        env:
+          GH_TOKEN: ${{ github.token }}
+          REPOSITORY: ${{ github.repository }}
+          BRANCH: ${{ github.event.pull_request.head.ref }}
         run: |
           python - <<'PY'
-          from pathlib import Path
+          import base64
+          import json
+          import os
+          import urllib.request
 
-          path = Path("index.html")
-          text = path.read_text(encoding="utf-8")
+          token = os.environ["GH_TOKEN"]
+          repo = os.environ["REPOSITORY"]
+          branch = os.environ["BRANCH"]
+          headers = {
+              "Accept": "application/vnd.github+json",
+              "Authorization": f"Bearer {token}",
+              "X-GitHub-Api-Version": "2022-11-28",
+              "User-Agent": "portrait-date-spacing-patch",
+          }
+
+          def request_json(url, method="GET", payload=None):
+              body = None if payload is None else json.dumps(payload).encode("utf-8")
+              request = urllib.request.Request(url, data=body, headers=headers, method=method)
+              with urllib.request.urlopen(request) as response:
+                  return json.load(response)
+
+          index_url = f"https://api.github.com/repos/{repo}/contents/index.html?ref={branch}"
+          index = request_json(index_url)
+          text = base64.b64decode(index["content"]).decode("utf-8")
+
           old = '''      .signal-meta {
         position: absolute;
         z-index: 4;
@@ -41,6 +63,7 @@ jobs:
       .signal-date {
         color: rgba(255, 255, 255, 0.9);
       }'''
+
           new = '''      .signal-meta {
         position: absolute;
         z-index: 4;
@@ -62,15 +85,34 @@ jobs:
         color: rgba(255, 255, 255, 0.9);
         text-align: center;
       }'''
+
           count = text.count(old)
           if count != 1:
               raise SystemExit(f"Expected exactly one signal-meta CSS block, found {count}")
-          path.write_text(text.replace(old, new, 1), encoding="utf-8")
+          text = text.replace(old, new, 1)
+
+          update_url = f"https://api.github.com/repos/{repo}/contents/index.html"
+          request_json(
+              update_url,
+              method="PUT",
+              payload={
+                  "message": "Evenly space portrait dates",
+                  "content": base64.b64encode(text.encode("utf-8")).decode("ascii"),
+                  "sha": index["sha"],
+                  "branch": branch,
+              },
+          )
+
+          marker_url = f"https://api.github.com/repos/{repo}/contents/.even-date-spacing-trigger?ref={branch}"
+          marker = request_json(marker_url)
+          delete_url = f"https://api.github.com/repos/{repo}/contents/.even-date-spacing-trigger"
+          request_json(
+              delete_url,
+              method="DELETE",
+              payload={
+                  "message": "Remove portrait spacing trigger",
+                  "sha": marker["sha"],
+                  "branch": branch,
+              },
+          )
           PY
-          rm .github/workflows/one-shot-even-dates.yml
-          git config user.name "Wenjia site patch"
-          git config user.email "actions@users.noreply.github.com"
-          git add index.html .github/workflows/one-shot-even-dates.yml
-          git diff --cached --check
-          git commit -m "Evenly space portrait dates"
-          git push
