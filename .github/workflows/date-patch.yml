@@ -1,0 +1,38 @@
+name: One-shot portrait date patch
+
+on:
+  push:
+    paths:
+      - .github/workflows/date-patch.yml
+
+permissions:
+  contents: write
+
+jobs:
+  patch:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+      - name: Update portrait date
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+
+          path = Path("index.html")
+          text = path.read_text(encoding="utf-8")
+          old = '<span class="signal-date">20211004</span>'
+          new = '<span class="signal-date">20211006</span>'
+          count = text.count(old)
+          if count != 1:
+              raise SystemExit(f"Expected exactly one old date, found {count}")
+          path.write_text(text.replace(old, new, 1), encoding="utf-8")
+          PY
+          rm .github/workflows/date-patch.yml
+          git config user.name "Wenjia site patch"
+          git config user.email "actions@users.noreply.github.com"
+          git add index.html .github/workflows/date-patch.yml
+          git diff --cached --check
+          git commit -m "Correct portrait date"
+          git push
