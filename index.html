@@ -965,32 +965,36 @@
         <div class="modal-view research-view" data-panel="research">
           <div class="modal-hero">
             <div class="modal-hero-copy">
-              <span class="modal-kicker">research // verifiable systems</span>
-              <h2 id="researchTitle">Build AI that can show its work.</h2>
-              <p>My research connects compliance reasoning, retrieval, citation grounding, runtime verification, and secure system migration.</p>
+              <span class="modal-kicker">research // citation-contract systems</span>
+              <h2 id="researchTitle">Separate evidence selection from answer release.</h2>
+              <p>My dissertation studies a narrow failure in compliance RAG: relevant evidence can be retrieved, yet a model-written final answer can still introduce unsupported compliance content.</p>
             </div>
           </div>
           <div class="modal-body">
             <div class="modal-intro">
-              <span class="section-label">current thesis</span>
-              <p>I design systems for high-stakes questions where a plausible answer is not enough. The evidence, version, and reasoning path should remain inspectable by the people responsible for the decision.</p>
+              <span class="section-label">dissertation // compliancegpt</span>
+              <p>ComplianceGPT is a citation-contract answerer for audit-facing QA over NIST SP 800-53 Rev. 4 and Rev. 5. The language model selects evidence IDs from a revision-scoped candidate pool; it does not write the evidence-bearing final answer. A deterministic orchestrator assembles the answer from canonical clauses, approved organization-profile values, or explicit unresolved states, then a rule-based verifier checks the released artifact.</p>
             </div>
             <div class="detail-grid">
               <article class="detail-card">
-                <span class="detail-number">01 / COMPLIANCEGPT</span>
-                <h3>Version-aware compliance RAG</h3>
-                <p>Decouples evidence selection from answer assembly to reduce version blindness, citation errors, and terminology hallucinations.</p>
+                <span class="detail-number">01 / FAILURE BOUNDARY</span>
+                <h3>Retrieval is not the last risk</h3>
+                <p>Even with relevant context, generated prose can loosen obligations, attach unsupported citations, mix revisions, or invent organization-defined values.</p>
               </article>
               <article class="detail-card">
-                <span class="detail-number">02 / EVIDENCE</span>
-                <h3>Canonical clause retrieval</h3>
-                <p>Parses NIST OSCAL catalogs into auditor-verifiable clauses, then combines hybrid retrieval stages for traceable answers.</p>
+                <span class="detail-number">02 / ANSWER PATH</span>
+                <h3>Retrieve → select IDs → assemble → verify</h3>
+                <p>S7 retrieval builds a clause pool. An LLM selects source IDs. The Contract Orchestrator resolves them against the Canonical Clause Store and ODP policy; the Runtime Verifier checks citation linkage, revision scope, source spans, status, and ODP behavior.</p>
               </article>
               <article class="detail-card">
-                <span class="detail-number">03 / ZERO TRUST</span>
-                <h3>Migration without a clean slate</h3>
-                <p>Studies overlay-based paths for moving legacy infrastructure toward Zero Trust without requiring a full system replacement.</p>
+                <span class="detail-number">03 / RESULTS</span>
+                <h3>Strict pass: 0.22 → 0.64 / 0.75</h3>
+                <p>Under matched S7 retrieval, strict answer-pass rose from 0.22 to 0.64 on Rev. 5 and 0.75 on Rev. 4. In no-profile ODP cases, the baseline false-completed 60/63 and 19/19; ComplianceGPT made no false-complete ODP insertions in those evaluated subsets.</p>
               </article>
+            </div>
+            <div class="modal-intro" style="margin-top: clamp(38px, 6vw, 68px);">
+              <span class="section-label">claim boundary</span>
+              <p>ComplianceGPT does not determine whether an organization is compliant and does not prove selected evidence is complete. Its claim is narrower: conditioned on selected source IDs and approved profile values, final-answer realization should not introduce unsupported compliance content.</p>
             </div>
             <div class="modal-cta-row">
               <button class="modal-cta" type="button" data-modal="publications">view publications</button>
