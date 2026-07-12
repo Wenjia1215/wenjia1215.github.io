@@ -1,15 +1,15 @@
 name: One-shot signal and email patch
 
 on:
-  push:
-    paths:
-      - .github/workflows/one-shot-signal-email.yml
+  pull_request:
+    types: [opened, synchronize, reopened]
 
 permissions:
   contents: write
 
 jobs:
   patch:
+    if: github.event.pull_request.head.repo.full_name == github.repository && github.actor != 'github-actions[bot]'
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -116,5 +116,3 @@ jobs:
           git diff --cached --check
           git commit -m "Refine contact link and portrait signal dates"
           git push
-
-# trigger
