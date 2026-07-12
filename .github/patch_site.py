@@ -25,8 +25,9 @@ def request_json(url, method="GET", payload=None):
 index_url = f"https://api.github.com/repos/{repo}/contents/index.html?ref={branch}"
 index = request_json(index_url)
 text = base64.b64decode(index["content"]).decode("utf-8")
+original = text
 
-old = '''      .signal-meta {
+old_css = '''      .signal-meta {
         position: absolute;
         z-index: 4;
         right: 18px;
@@ -46,7 +47,7 @@ old = '''      .signal-meta {
         color: rgba(255, 255, 255, 0.9);
       }'''
 
-new = '''      .signal-meta {
+new_css = '''      .signal-meta {
         position: absolute;
         z-index: 4;
         right: 18px;
@@ -68,17 +69,31 @@ new = '''      .signal-meta {
         text-align: center;
       }'''
 
-count = text.count(old)
-if count != 1:
-    raise SystemExit(f"Expected exactly one signal-meta CSS block, found {count}")
-text = text.replace(old, new, 1)
+if old_css in text:
+    if text.count(old_css) != 1:
+        raise SystemExit(f"Expected at most one old CSS block, found {text.count(old_css)}")
+    text = text.replace(old_css, new_css, 1)
+elif new_css not in text:
+    raise SystemExit("Neither expected portrait CSS block was found")
+
+old_date = '<span class="signal-date">20211004</span>'
+new_date = '<span class="signal-date">20211006</span>'
+if old_date in text:
+    if text.count(old_date) != 1:
+        raise SystemExit(f"Expected at most one old portrait date, found {text.count(old_date)}")
+    text = text.replace(old_date, new_date, 1)
+elif new_date not in text:
+    raise SystemExit("Neither expected final portrait date was found")
+
+if text == original:
+    raise SystemExit(0)
 
 update_url = f"https://api.github.com/repos/{repo}/contents/index.html"
 request_json(
     update_url,
     method="PUT",
     payload={
-        "message": "Evenly space portrait dates",
+        "message": "Preserve corrected portrait date with equal spacing",
         "content": base64.b64encode(text.encode("utf-8")).decode("ascii"),
         "sha": index["sha"],
         "branch": branch,
