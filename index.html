@@ -988,13 +988,13 @@
               </article>
               <article class="detail-card">
                 <span class="detail-number">03 / RESULTS</span>
-                <h3>Strict pass: 0.22 → 0.64 / 0.75</h3>
-                <p>Under matched S7 retrieval, strict answer-pass rose from 0.22 to 0.64 on Rev. 5 and 0.75 on Rev. 4. In no-profile ODP cases, the baseline false-completed 60/63 and 19/19; ComplianceGPT made no false-complete ODP insertions in those evaluated subsets.</p>
+                <h3>Complete strict pass: 65/100 and 29/36</h3>
+                <p>Under the complete seven-gate standard, all three systems share the same questions, ordered evidence windows, gold labels, and scoring rules within each revision. Rev. 5: ComplianceGPT 65/100, Gemini 3.5 Flash 56/100, and Qwen2.5-7B (4-bit, free-form) 21/100. Rev. 4: ComplianceGPT 29/36, Gemini 22/36, and Qwen 6/36. These retrospective assessments of saved outputs are distinct from historical contract/gold-only checks. <a href="https://github.com/Wenjia1215/ComplianceGPT/blob/main/docs/EVALUATION_RESULTS.md" target="_blank" rel="noopener noreferrer">Results and scoring definitions ↗</a></p>
               </article>
             </div>
             <div class="modal-intro" style="margin-top: clamp(38px, 6vw, 68px);">
               <span class="section-label">claim boundary</span>
-              <p>ComplianceGPT does not determine whether an organization is compliant and does not prove selected evidence is complete. Its claim is narrower: conditioned on selected source IDs and approved profile values, final-answer realization should not introduce unsupported compliance content.</p>
+              <p>ComplianceGPT does not determine whether an organization is compliant and does not prove selected evidence is complete. Its claim is narrower: conditioned on selected source IDs and approved profile values, final-answer realization should not introduce unsupported compliance content. Exploratory, unadjusted exact paired McNemar tests against Gemini yield p = 0.122078 (Rev. 5) and p = 0.092285 (Rev. 4); neither establishes superiority at the 0.05 level. The benchmarks are author-labeled, and retrospective source-inspection judgments have not been independently adjudicated.</p>
             </div>
             <div class="modal-cta-row">
               <button class="modal-cta" type="button" data-modal="publications">view publications</button>
@@ -1071,6 +1071,13 @@
           </div>
           <div class="modal-body">
             <div class="publication-list">
+              <article class="publication-item">
+                <div class="publication-year">2026</div>
+                <div>
+                  <h3>ComplianceGPT: A Citation-Contract Answerer for Mechanically Verifiable Compliance Question Answering</h3>
+                  <p><strong>Wenjia Wang</strong>, Seyed Masoud Sadjadi, Naphtali Rishe, Arpan Mahara. <em>Proceedings of the 18th International Joint Conference on Knowledge Discovery, Knowledge Engineering and Knowledge Management</em>, Volume 2 (<a href="https://www.insticc.org/node/technicalprogram/ic3k/2026/presentations" target="_blank" rel="noopener noreferrer">KEOD 2026</a>), pp. 531–542. SCITEPRESS.</p>
+                </div>
+              </article>
               <article class="publication-item">
                 <div class="publication-year">2026</div>
                 <div>
